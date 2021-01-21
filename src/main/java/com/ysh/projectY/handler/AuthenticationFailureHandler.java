@@ -3,10 +3,10 @@ package com.ysh.projectY.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ysh.projectY.entity.LoginLogs;
 import com.ysh.projectY.entity.User;
+import com.ysh.projectY.exception.MobilePhoneBadCredentialsException;
 import com.ysh.projectY.service.LoginLogsService;
 import com.ysh.projectY.service.UserDetailService;
 import com.ysh.projectY.utils.JsonResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.*;
@@ -38,21 +38,28 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
 
     private void record(HttpServletRequest req, String remarks) {
         LoginLogs loginLogs = new LoginLogs();
-        String username = null;
-        String mobilePhone = null;
-        String requestURI = req.getRequestURI();
-        if (requestURI.contains("doLogin")) {
-            username = req.getParameter("username");
-            loginLogs.setUsername(username);
-            loginLogs.setPassword(req.getParameter("password"));
-        } else if (requestURI.contains("doMobileLogin")) {
-            mobilePhone = req.getParameter("mobilePhone");
-            loginLogs.setMobilePhone(mobilePhone);
-            loginLogs.setPassword(req.getParameter("smsCaptcha"));
-        } else {
-            loginLogs.setUsername("Unknown Error!");
-            loginLogs.setMobilePhone("Unknown Error!");
+        String username;
+        String mobilePhone;
+        String password;
+        username = req.getParameter("username");
+        if (username == null) {
+            username = "";
         }
+        mobilePhone = req.getParameter("mobilePhone");
+        if (mobilePhone == null) {
+            mobilePhone = "";
+        }
+        password = req.getParameter("password");
+        if (password == null) {
+            password = req.getParameter("smsCaptcha");
+            if (password == null) {
+                password = "";
+            }
+        }
+        String requestURI = req.getRequestURI();
+        loginLogs.setUsername(username);
+        loginLogs.setPassword(password);
+        loginLogs.setMobilePhone(mobilePhone);
         loginLogs.setLoginURL(requestURI);
         loginLogs.setSessionID(req.getSession().getId());
         loginLogs.setClientIP(req.getRemoteAddr());
@@ -60,17 +67,17 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
         loginLogs.setLoginDateTime(new Timestamp(System.currentTimeMillis()));
         loginLogs.setRemarks(remarks);
         loginLogsService.saveAndFlush(loginLogs);
-        if (username != null) {
+        if (!"".equals(username)) {
             userLockedCheckByUsername(username);
         }
-        if (mobilePhone != null) {
+        if (!"".equals(mobilePhone)) {
             userLockedCheckByMobilePhone(mobilePhone);
         }
     }
 
     private void userLockedCheckByUsername(String username) {
         int count = loginLogsService.findLastFailureCountByUsername(username);
-        System.out.println("count: " + count);
+        System.out.println("count--> : " + count);
         if (count >= 3) {
             final Optional<User> optional = userDetailService.findByUsername(username);
             if (optional.isPresent()) {
@@ -83,7 +90,7 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
 
     private void userLockedCheckByMobilePhone(String mobilePhone) {
         int count = loginLogsService.findLastFailureCountByMobilePhone(mobilePhone);
-        System.out.println("count: " + count);
+        System.out.println("count==>: " + count);
         if (count >= 3) {
             final Optional<User> optional = userDetailService.findByMobilePhone(mobilePhone);
             if (optional.isPresent()) {
@@ -120,6 +127,9 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
         } else if (e instanceof UsernameNotFoundException) {
             msg = "projectY.login.failure.BadCredentialsException";
             detail = "Authentication Service Exception: " + e.toString();
+        } else if (e instanceof MobilePhoneBadCredentialsException) {
+            msg = e.getMessage();
+            detail = "MobilePhone BadCredentials Exception!";
         } else {
             msg = "projectY.login.failure.Exception";
             detail = "Exception!";

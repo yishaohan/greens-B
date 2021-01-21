@@ -5,12 +5,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
 
 @RestController
 @RequestMapping(path = "${projectY.api-base-path}")
@@ -34,4 +31,15 @@ public class UtilsController {
     public HttpEntity<?> expiredSession(HttpServletRequest req) {
         return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNAUTHORIZED.value(), "projectY.UtilsController.login.expiredSession", "会话过期, 请重新登录!", req.getServletPath()), HttpStatus.UNAUTHORIZED);
     }
+
+    @PostMapping("/submit/test")
+    public HttpEntity<?> test() {
+        return new ResponseEntity<>(JsonResponse.failure(HttpStatus.OK.value(), "projectY.UtilsController.test.XXXXXXXX", "测试接口!"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/test1", method = {RequestMethod.GET, RequestMethod.POST})
+    public HttpEntity<?> test1() {
+        return new ResponseEntity<>(JsonResponse.failure(HttpStatus.OK.value(), "projectY.UtilsController.test1.XXXXXXXX", "测试接口!"), HttpStatus.OK);
+    }
+
 }

@@ -36,9 +36,11 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         if (requestURI.contains("doLogin")) {
             loginLogs.setUsername(req.getParameter("username"));
             loginLogs.setPassword(req.getParameter("password"));
+            loginLogs.setRemarks("Username Login");
         } else if (requestURI.contains("doMobileLogin")) {
             loginLogs.setMobilePhone(req.getParameter("mobilePhone"));
             loginLogs.setPassword(req.getParameter("smsCaptcha"));
+            loginLogs.setRemarks("MobilePhone Login");
         } else {
             loginLogs.setUsername("Unknown Error!");
             loginLogs.setMobilePhone("Unknown Error!");

@@ -52,14 +52,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * anyRequest          |   匹配所有请求路径
+     * access              |   SpringEl表达式结果为true时可以访问
+     * anonymous           |   匿名可以访问
+     * denyAll             |   用户不能访问
+     * fullyAuthenticated  |   用户完全认证可以访问（非remember-me下自动登录）
+     * hasAnyAuthority     |   如果有参数，参数表示权限，则其中任何一个权限可以访问
+     * hasAnyRole          |   如果有参数，参数表示角色，则其中任何一个角色可以访问
+     * hasAuthority        |   如果有参数，参数表示权限，则其权限可以访问
+     * hasIpAddress        |   如果有参数，参数表示IP地址，如果用户IP和参数匹配，则可以访问
+     * hasRole             |   如果有参数，参数表示角色，则其角色可以访问
+     * permitAll           |   用户可以任意访问
+     * rememberMe          |   允许通过remember-me登录的用户访问
+     * authenticated       |   用户登录后可访问
+     */
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.portMapper().http(httpPort).mapsTo(httpsPort);
-        http.requiresChannel(channel -> channel.anyRequest().requiresSecure());
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.portMapper().http(httpPort).mapsTo(httpsPort);
+        httpSecurity.requiresChannel(channel -> channel.anyRequest().requiresSecure());
 
-        http.addFilterBefore(new UsernamePasswordLoginFilter(authenticationFailureHandler), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(new UsernamePasswordLoginFilter(authenticationFailureHandler), UsernamePasswordAuthenticationFilter.class);
 
-        http.authorizeRequests()
+        httpSecurity.authorizeRequests()
                 .antMatchers(apiBasePath + "/users/**")
                 .hasRole("admin")
                 .antMatchers(apiBasePath + "/submit/**")
@@ -67,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .permitAll();
 
-        http.formLogin()
+        httpSecurity.formLogin()
                 .loginPage(apiBasePath + "/login")
                 .loginProcessingUrl(apiBasePath + "/doLogin")
                 .usernameParameter("username")
@@ -76,30 +91,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(authenticationFailureHandler)
                 .and()
                 .rememberMe()
-                .rememberMeCookieName("autoLogin")
+//                .rememberMeCookieDomain("xclass.highspeed.vip")
+                .rememberMeCookieName("projectY")
                 .rememberMeParameter("autoLogin")
                 .key("projectY")
                 .tokenRepository(rememberMeTokenRepositoryImpl)
                 .tokenValiditySeconds(60 * 60 * 24 * 30)
-                .useSecureCookie(true);
+                .useSecureCookie(true); //需要依赖前端的访问协议吗?
 
         //前台还没有实现Logout
-        http.logout()
+        httpSecurity.logout()
                 .logoutUrl(apiBasePath + "/logout")
                 .logoutSuccessHandler(successLogoutHandler)
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .deleteCookies("PHPSESSID");  // ??????????????
 
-        http.csrf().disable();
+        httpSecurity.csrf().disable();
 
-        http.sessionManagement()
+        httpSecurity.sessionManagement()
                 .invalidSessionUrl(apiBasePath + "/invalidSession")
                 .maximumSessions(1)
                 .expiredUrl(apiBasePath + "/expiredSession")
                 .maxSessionsPreventsLogin(false);
 
-        http.apply(mobilePhoneAuthenticationConfig);
+        httpSecurity.apply(mobilePhoneAuthenticationConfig);
     }
 
     // 自定义customAuthenticationProvider, 验证码认证逻辑太靠后, 用Filter代替 ????? 不对
@@ -121,6 +137,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected AuthenticationManager authenticationManager() {
         return new ProviderManager(Collections.singletonList(customAuthenticationProvider()));
+//        try {
+//            return super.authenticationManagerBean();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Bean
