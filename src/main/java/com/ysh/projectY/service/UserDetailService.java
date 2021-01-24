@@ -5,6 +5,8 @@ import com.ysh.projectY.dao.UserDao;
 import com.ysh.projectY.entity.User;
 import com.ysh.projectY.utils.MethodResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +26,14 @@ public class UserDetailService implements UserDetailsService {
     @Autowired
     RoleDao roleDao;
 
+    private void getUserRoles(User user) {
+        user.setRoles(roleDao.getUserRolesByUserId(user.getId()));
+    }
+
+    private void erasePassword(User user) {
+        user.setPassword("");
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("loadUserByUsername(String username=" + username + ")");
@@ -30,7 +41,8 @@ public class UserDetailService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("account not found!!!");
         }
-        user.setRoles(roleDao.getUserRolesByUserId(user.getId()));
+        erasePassword(user);
+        getUserRoles(user);
         return user;
     }
 
@@ -53,18 +65,43 @@ public class UserDetailService implements UserDetailsService {
     }
 
     public Optional<User> findById(Integer id) {
-        return userDao.findById(id);
+        final Optional<User> optional = userDao.findById(id);
+        if (optional.isPresent()) {
+            erasePassword(optional.get());
+            getUserRoles(optional.get());
+        }
+        return optional;
     }
 
     public Optional<User> findByUsername(String username) {
-        return userDao.findByUsername(username);
+        final Optional<User> optional = userDao.findByUsername(username);
+        if (optional.isPresent()) {
+            erasePassword(optional.get());
+            getUserRoles(optional.get());
+        }
+        return optional;
     }
 
     public Optional<User> findByMobilePhone(String mobilePhone) {
-        return userDao.findByMobilePhone(mobilePhone);
+        final Optional<User> optional = userDao.findByMobilePhone(mobilePhone);
+        if (optional.isPresent()) {
+            erasePassword(optional.get());
+            getUserRoles(optional.get());
+        }
+        return optional;
     }
 
     public void saveAndFlush(User user) {
         userDao.saveAndFlush(user);
+    }
+
+    public Page<User> getUsers(Pageable pageable) {
+        final Page<User> page = userDao.findAll(pageable);
+        final List<User> content = page.getContent();
+        for (User user : content) {
+            erasePassword(user);
+            getUserRoles(user);
+        }
+        return page;
     }
 }

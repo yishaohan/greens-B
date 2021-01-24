@@ -6,15 +6,18 @@ import com.ysh.projectY.service.SmsCaptchaService;
 import com.ysh.projectY.service.UserDetailService;
 import com.ysh.projectY.utils.JsonResponse;
 import com.ysh.projectY.utils.MethodResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * rest 风格 api
@@ -51,7 +54,7 @@ public class UserController {
      * @param userRegisterForm 新建用户表单
      * @return http 响应
      */
-    @PostMapping("/register")
+    @PostMapping("/register") //???????????????????????????????????????????????????????????????????
     public HttpEntity<?> addUser(@Valid @RequestBody UserRegisterForm userRegisterForm) {
         System.out.println("UserForm验证完成!");
         MethodResponse methodResponse = smsCaptchaService.verifySmsCaptcha(userRegisterForm.getMobilePhone(), userRegisterForm.getSmsCaptcha());
@@ -69,6 +72,25 @@ public class UserController {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
+        }
+    }
+
+    @GetMapping("/admin/users")
+    public HttpEntity<?> getUsers(@RequestParam(name = "current", defaultValue = "0") int current, @RequestParam(name = "pageSize", defaultValue = "6") int pageSize) {
+        Pageable pageable = PageRequest.of(current-1, pageSize, Sort.by(Sort.Direction.ASC, "id"));
+        final Page<User> users = userDetailService.getUsers(pageable);
+//        final List<User> content = users.getContent();
+//        System.out.println("+++++++++++++++++++++++++++++++++++++");
+//        for (User user : content) {
+//            System.out.println(user);
+//        }
+//        System.out.println("+++++++++++++++++++++++++++++++++++++");
+//        final long totalElements = users.getTotalElements();
+        try {
+            return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.UserController.getUsers.success", users, users.toString()), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

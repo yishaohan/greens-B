@@ -32,9 +32,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public HttpEntity<?> httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        e.printStackTrace();
         List<String> errorsKey = new ArrayList<>();
         errorsKey.add(e.getMessage());
-        System.out.println(e);
         return new ResponseEntity<>(JsonResponse.failure(HttpStatus.BAD_REQUEST.value(), "projectY.GlobalExceptionHandler.HttpRequestMethodNotSupportedException", errorsKey, e.toString()), HttpStatus.BAD_REQUEST);
     }
 
@@ -47,6 +47,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public HttpEntity<?> missingServletRequestParameter(MissingServletRequestParameterException e) {
+        e.printStackTrace();
         List<String> errorsKey = new ArrayList<>();
         errorsKey.add(e.getMessage());
         return new ResponseEntity<>(JsonResponse.failure(HttpStatus.BAD_REQUEST.value(), "projectY.GlobalExceptionHandler.MissingServletRequestParameterException", errorsKey, e.toString()), HttpStatus.BAD_REQUEST);
@@ -60,6 +61,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public HttpEntity<?> httpMediaTypeNotSupported(HttpMediaTypeNotSupportedException e) {
+        e.printStackTrace();
         List<String> errorsKey = new ArrayList<>();
         errorsKey.add(e.getMessage());
         return new ResponseEntity<>(JsonResponse.failure(HttpStatus.BAD_REQUEST.value(), "projectY.GlobalExceptionHandler.HttpMediaTypeNotSupportedException", errorsKey, e.toString()), HttpStatus.BAD_REQUEST);
@@ -73,6 +75,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public HttpEntity<?> httpMessageNotReadable(HttpMessageNotReadableException e) {
+        e.printStackTrace();
 //        return ResultObject.createByErrorMessage("参数体校验错误");
         List<String> errorsKey = new ArrayList<>();
         errorsKey.add(e.getMessage());
@@ -88,6 +91,7 @@ public class GlobalExceptionHandler {
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
     public HttpEntity<?> bind(BindException e) {
+        e.printStackTrace();
         List<String> errorsKey = new ArrayList<>();
         List<ObjectError> errors = e.getAllErrors();
         for (ObjectError error : errors) {
@@ -105,6 +109,7 @@ public class GlobalExceptionHandler {
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public HttpEntity<?> methodArgumentNotValid(MethodArgumentNotValidException e) {
+        e.printStackTrace();
         List<String> errorsKey = new ArrayList<>();
         List<ObjectError> errors = e.getAllErrors();
         for (ObjectError error : errors) {
@@ -123,6 +128,7 @@ public class GlobalExceptionHandler {
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     public HttpEntity<?> constraintViolation(ConstraintViolationException e) {
+        e.printStackTrace();
         List<String> errorsKey = new ArrayList<>();
         final Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
         for (ConstraintViolation<?> constraintViolation : constraintViolations) {
@@ -139,6 +145,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ValidationException.class)
     public HttpEntity<?> validation(ValidationException e) {
+        e.printStackTrace();
 //        String message = e.getCause().getMessage();
         List<String> errorsKey = new ArrayList<>();
         errorsKey.add(e.getMessage());
@@ -148,6 +155,7 @@ public class GlobalExceptionHandler {
     //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public HttpEntity<?> exception(Exception e) {
+        e.printStackTrace();
         return new ResponseEntity<>(JsonResponse.failure(HttpStatus.INTERNAL_SERVER_ERROR.value(), "projectY.GlobalExceptionHandler.Exception", e, e.getClass() + ": " + e.toString()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
