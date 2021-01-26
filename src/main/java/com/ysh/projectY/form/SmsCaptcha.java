@@ -1,17 +1,16 @@
-package com.ysh.projectY.entity;
+package com.ysh.projectY.form;
 
-import com.ysh.projectY.valid.SmsCaptchaFormValidator;
-import com.ysh.projectY.valid.group.First;
-import com.ysh.projectY.valid.group.Second;
+import com.ysh.projectY.form.valid.group.First;
+import com.ysh.projectY.form.valid.group.Second;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.GroupSequence;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-@SmsCaptchaFormValidator(groups = Second.class)
-@GroupSequence({First.class, Second.class, SmsCaptchaForm.class})
-public class SmsCaptchaForm {
+@com.ysh.projectY.form.valid.SmsCaptcha(groups = Second.class)
+@GroupSequence({First.class, Second.class, SmsCaptcha.class})
+public class SmsCaptcha {
 
     @NotBlank(message = "project-y.valid.sms-captcha.mobile-phone.not-blank", groups = First.class)
     @Length(message = "project-y.valid.sms-captcha.mobile-phone.length", min = 10, max = 11, groups = First.class)

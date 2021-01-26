@@ -1,12 +1,11 @@
 package com.ysh.projectY.configuration;
 
 import com.ysh.projectY.filter.UsernamePasswordLoginFilter;
-import com.ysh.projectY.handler.AuthenticationFailureHandler;
-import com.ysh.projectY.handler.AuthenticationSuccessHandler;
-import com.ysh.projectY.handler.SuccessLogoutHandler;
+import com.ysh.projectY.handler.*;
 import com.ysh.projectY.provider.CustomAuthenticationProvider;
 import com.ysh.projectY.service.RememberMeTokenRepositoryImpl;
 import com.ysh.projectY.service.UserDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +13,13 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 import java.util.Collections;
 
@@ -38,6 +39,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     final RememberMeTokenRepositoryImpl rememberMeTokenRepositoryImpl;
     final MobilePhoneAuthenticationConfig mobilePhoneAuthenticationConfig;
     final SuccessLogoutHandler successLogoutHandler;
+
+    @Autowired
+    CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    @Autowired
+    CustomAccessDeniedHandler customAccessDeniedHandler;
 
     public WebSecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler, AuthenticationFailureHandler authenticationFailureHandler, RememberMeTokenRepositoryImpl rememberMeTokenRepositoryImpl, MobilePhoneAuthenticationConfig mobilePhoneAuthenticationConfig, SuccessLogoutHandler successLogoutHandler) {
         this.authenticationSuccessHandler = authenticationSuccessHandler;
@@ -75,12 +81,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.addFilterBefore(new UsernamePasswordLoginFilter(authenticationFailureHandler), UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.authorizeRequests()
-                .antMatchers(apiBasePath + "/users/**")
+                .antMatchers(apiBasePath + "/admin/**")
                 .hasRole("admin")
+                .antMatchers(apiBasePath + "/users/**")
+                .hasRole("user")
                 .antMatchers(apiBasePath + "/submit/**")
                 .hasRole("user")
                 .anyRequest()
                 .permitAll();
+
+        httpSecurity.exceptionHandling()
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler);
 
         httpSecurity.formLogin()
                 .loginPage(apiBasePath + "/login")
@@ -110,12 +124,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable();
 
         httpSecurity.sessionManagement()
-                .invalidSessionUrl(apiBasePath + "/invalidSession")
+                .sessionAuthenticationFailureHandler(authenticationFailureHandler)
+//                .invalidSessionUrl(apiBasePath + "/invalidSession")
                 .maximumSessions(1)
-                .expiredUrl(apiBasePath + "/expiredSession")
+//                .expiredUrl(apiBasePath + "/expiredSession")
                 .maxSessionsPreventsLogin(false);
 
         httpSecurity.apply(mobilePhoneAuthenticationConfig);
+
+        // 设置跨域请求, 配合预定义的Bean: CorsConfigurationSource
+        httpSecurity.cors(Customizer.withDefaults());
+
+        // 解决跨域问题。cors 预检请求放行,让Spring security 放行所有preflight request（cors 预检请求）
+//        httpSecurity.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
     }
 
     // 自定义customAuthenticationProvider, 验证码认证逻辑太靠后, 用Filter代替 ????? 不对

@@ -2,6 +2,8 @@ package com.ysh.projectY.dao;
 
 import com.ysh.projectY.entity.Role;
 import com.ysh.projectY.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -27,4 +29,7 @@ public interface UserDao extends JpaRepository<User, Integer> {
 
     @Query(value = "select count(*) from project_y.user where mobile_phone=:mobilePhone", nativeQuery = true)
     int isExistByMobilePhone(String mobilePhone);
+
+
+    Page<User> findAllByNicknameContainingAndUsernameContainingAndMobilePhoneContaining(String nickname, String username, String mobilePhone, Pageable pageable);
 }

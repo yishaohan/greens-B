@@ -97,3 +97,5 @@ The following guides illustrate how to use some features concretely:
 * session超时,更新LoginLogs
 
 * 登陆失败不会发布Event
+
+* COSR错误

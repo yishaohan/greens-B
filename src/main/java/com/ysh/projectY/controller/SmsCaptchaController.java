@@ -1,7 +1,6 @@
 package com.ysh.projectY.controller;
 
-import com.ysh.projectY.entity.SmsCaptcha;
-import com.ysh.projectY.entity.SmsCaptchaForm;
+import com.ysh.projectY.form.SmsCaptcha;
 import com.ysh.projectY.service.SmsCaptchaService;
 import com.ysh.projectY.utils.JsonResponse;
 import com.ysh.projectY.utils.MethodResponse;
@@ -33,13 +32,13 @@ public class SmsCaptchaController {
      * @return http 响应
      */
     @PostMapping("/smsCaptcha")
-    public HttpEntity<?> sendSms(@Valid @RequestBody SmsCaptchaForm smsCaptchaForm, HttpServletRequest req) {
+    public HttpEntity<?> sendSms(@Valid @RequestBody SmsCaptcha smsCaptchaForm, HttpServletRequest req) {
         System.out.println("SmsCaptchaForm验证完成!");
         MethodResponse methodResponse = smsCaptchaService.sendSmsCaptchaVerify(smsCaptchaForm.getMobilePhone(), smsCaptchaForm.getSource(), req.getRemoteAddr());
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }
-        SmsCaptcha smsCaptcha = new SmsCaptcha();
+        com.ysh.projectY.entity.SmsCaptcha smsCaptcha = new com.ysh.projectY.entity.SmsCaptcha();
         smsCaptcha.setMobilePhone(smsCaptchaForm.getMobilePhone());
         smsCaptcha.setSource(smsCaptchaForm.getSource());
         smsCaptcha.setClientIp(req.getRemoteAddr());

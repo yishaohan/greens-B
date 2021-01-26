@@ -35,6 +35,7 @@ public class MobilePhoneAuthenticationConfig extends SecurityConfigurerAdapter<D
 
     @Override
     public void configure(HttpSecurity http) {
+
         MobilePhoneAuthenticationFilter mobilePhoneAuthenticationFilter = new MobilePhoneAuthenticationFilter();
         final AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
         mobilePhoneAuthenticationFilter.setAuthenticationManager(authenticationManager);

@@ -136,7 +136,7 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
         }
         record(req, detail);
         resp.setHeader("Access-Control-Allow-Headers", "*");
-        resp.setHeader("Access-Control-Allow-Methods", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT");
         resp.setHeader("Access-Control-Allow-Origin", allowedOrigins);
         resp.setHeader("Access-Control-Allow-Credentials", "true");
         resp.setHeader("Access-Control-Max-Age", "1800");
@@ -146,6 +146,5 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
         out.write(new ObjectMapper().writeValueAsString(loginFailure));
         out.flush();
         out.close();
-
     }
 }

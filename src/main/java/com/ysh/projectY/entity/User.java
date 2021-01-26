@@ -51,7 +51,8 @@ public class User implements UserDetails {
     @Column(name = "`user_locked`", columnDefinition = "tinyint(1) NOT NULL comment '用户是否锁定'")
     private boolean locked;
 
-    @Transient
+    //    @Transient
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Role> roles;
 
     @Override
@@ -69,6 +70,14 @@ public class User implements UserDetails {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     @Override
@@ -95,14 +104,6 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
     }
 
     public String getAvatarURL() {

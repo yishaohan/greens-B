@@ -6,23 +6,23 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-@Configuration
+//@Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Value("${projectY.api-base-path}")
-    private String apiBasePath;
+//    @Value("${projectY.api-base-path}")
+//    private String apiBasePath;
+//
+//    @Value("${projectY.allowed-origins}")
+//    private String allowedOrigins;
 
-    @Value("${projectY.allowed-origins}")
-    private String allowedOrigins;
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping(apiBasePath + "/**")
-                .allowedOrigins(allowedOrigins)
-                .allowCredentials(true)  // 允许前端携带cookie
-                .allowedHeaders("*")
-                .allowedMethods("*")
-                .exposedHeaders("*")
-                .maxAge(1800);
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping(apiBasePath + "/**")
+//                .allowedOrigins(allowedOrigins)
+//                .allowCredentials(true)  // 允许前端携带cookie
+//                .allowedHeaders("Authorization", "Content-Type")
+//                .allowedMethods("OPTIONS", "GET", "POST", "PUT")
+////                .exposedHeaders("content-type")
+//                .maxAge(1800);
+//    }
 }

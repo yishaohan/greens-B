@@ -16,6 +16,7 @@ public class ErrorPageConfig implements ErrorPageRegistrar {
     @Override
     public void registerErrorPages(ErrorPageRegistry registry) {
         registry.addErrorPages(
+                new ErrorPage(HttpStatus.UNAUTHORIZED, apiBasePath + "/error/401"),
                 new ErrorPage(HttpStatus.FORBIDDEN, apiBasePath + "/error/403"),
                 new ErrorPage(HttpStatus.NOT_FOUND, apiBasePath + "/error/404"),
                 new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, apiBasePath + "/error/500"));

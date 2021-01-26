@@ -1,15 +1,14 @@
-package com.ysh.projectY.valid.impl;
+package com.ysh.projectY.form.valid.impl;
 
-import com.ysh.projectY.entity.SmsCaptchaForm;
 import com.ysh.projectY.service.SmsCaptchaService;
-import com.ysh.projectY.valid.SmsCaptchaFormValidator;
+import com.ysh.projectY.form.valid.SmsCaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 
-public class SmsCaptchaFormValidatorImpl implements ConstraintValidator<SmsCaptchaFormValidator, SmsCaptchaForm> {
+public class SmsCaptchaImpl implements ConstraintValidator<SmsCaptcha, com.ysh.projectY.form.SmsCaptcha> {
 
     @Autowired
     SmsCaptchaService smsCaptchaService;
@@ -19,11 +18,11 @@ public class SmsCaptchaFormValidatorImpl implements ConstraintValidator<SmsCaptc
     private final String[] ALL_SOURCE = {"register", "login"};
 
     @Override
-    public boolean isValid(SmsCaptchaForm smsCaptchaForm, ConstraintValidatorContext context) {
+    public boolean isValid(com.ysh.projectY.form.SmsCaptcha smsCaptcha, ConstraintValidatorContext context) {
         System.out.println("Into: SmsCaptchaValidatorImpl.isValid()");
         // 关闭默认消息
         context.disableDefaultConstraintViolation();
-        if (!Arrays.asList(ALL_SOURCE).contains(smsCaptchaForm.getSource())) {
+        if (!Arrays.asList(ALL_SOURCE).contains(smsCaptcha.getSource())) {
             context.buildConstraintViolationWithTemplate("projectY.valid.SmsCaptcha.source.notExist").addConstraintViolation();
             return false;
         }

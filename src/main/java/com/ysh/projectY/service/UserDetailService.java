@@ -26,9 +26,9 @@ public class UserDetailService implements UserDetailsService {
     @Autowired
     RoleDao roleDao;
 
-    private void getUserRoles(User user) {
-        user.setRoles(roleDao.getUserRolesByUserId(user.getId()));
-    }
+//    private void getUserRoles(User user) {
+//        user.setRoles(roleDao.getUserRolesByUserId(user.getId()));
+//    }
 
     private void erasePassword(User user) {
         user.setPassword("");
@@ -41,8 +41,8 @@ public class UserDetailService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("account not found!!!");
         }
-        erasePassword(user);
-        getUserRoles(user);
+//        erasePassword(user);  不能在此清除密码
+//        getUserRoles(user);
         return user;
     }
 
@@ -67,8 +67,7 @@ public class UserDetailService implements UserDetailsService {
     public Optional<User> findById(Integer id) {
         final Optional<User> optional = userDao.findById(id);
         if (optional.isPresent()) {
-            erasePassword(optional.get());
-            getUserRoles(optional.get());
+//            getUserRoles(optional.get());
         }
         return optional;
     }
@@ -76,8 +75,7 @@ public class UserDetailService implements UserDetailsService {
     public Optional<User> findByUsername(String username) {
         final Optional<User> optional = userDao.findByUsername(username);
         if (optional.isPresent()) {
-            erasePassword(optional.get());
-            getUserRoles(optional.get());
+//            getUserRoles(optional.get());
         }
         return optional;
     }
@@ -85,8 +83,7 @@ public class UserDetailService implements UserDetailsService {
     public Optional<User> findByMobilePhone(String mobilePhone) {
         final Optional<User> optional = userDao.findByMobilePhone(mobilePhone);
         if (optional.isPresent()) {
-            erasePassword(optional.get());
-            getUserRoles(optional.get());
+//            getUserRoles(optional.get());
         }
         return optional;
     }
@@ -95,13 +92,23 @@ public class UserDetailService implements UserDetailsService {
         userDao.saveAndFlush(user);
     }
 
-    public Page<User> getUsers(Pageable pageable) {
-        final Page<User> page = userDao.findAll(pageable);
+    public Page<User> getUsers(String nickname, String username, String mobilePhone, Pageable pageable) {
+        final Page<User> page = userDao.findAllByNicknameContainingAndUsernameContainingAndMobilePhoneContaining(nickname, username, mobilePhone, pageable);
         final List<User> content = page.getContent();
         for (User user : content) {
-            erasePassword(user);
-            getUserRoles(user);
+//            getUserRoles(user);
         }
         return page;
+    }
+
+    public MethodResponse updateUser(User user) {
+        try {
+            userDao.saveAndFlush(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MethodResponse.failure("projectY.UserService.updateUser.failure.Exception", e.toString());
+        }
+        return MethodResponse.success("projectY.UserService.updateUser.success");
+
     }
 }

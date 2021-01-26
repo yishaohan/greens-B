@@ -1,16 +1,15 @@
-package com.ysh.projectY.entity;
+package com.ysh.projectY.form;
 
-import com.ysh.projectY.valid.UserRegisterFormValidator;
-import com.ysh.projectY.valid.group.First;
-import com.ysh.projectY.valid.group.Second;
+import com.ysh.projectY.form.valid.group.First;
+import com.ysh.projectY.form.valid.group.Second;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.GroupSequence;
 import javax.validation.constraints.*;
 
-@UserRegisterFormValidator(groups = Second.class)
-@GroupSequence({First.class, Second.class, UserRegisterForm.class})
-public class UserRegisterForm {
+@com.ysh.projectY.form.valid.AddUser(groups = Second.class)
+@GroupSequence({First.class, Second.class, AddUser.class})
+public class AddUser {
 
     @NotBlank(message = "project-y.valid.user.username.not-blank", groups = First.class)
     @Email(message = "project-y.valid.user.username.email", groups = First.class)

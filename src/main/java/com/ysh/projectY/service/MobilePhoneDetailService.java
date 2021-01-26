@@ -25,8 +25,7 @@ public class MobilePhoneDetailService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("mobile phone not found!!!");
         }
-        user.setPassword("");
-        user.setRoles(roleDao.getUserRolesByUserId(user.getId()));
+//        user.setRoles(roleDao.getUserRolesByUserId(user.getId()));
         return user;
     }
 
