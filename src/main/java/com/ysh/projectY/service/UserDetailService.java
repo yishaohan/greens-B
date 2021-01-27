@@ -46,24 +46,6 @@ public class UserDetailService implements UserDetailsService {
         return user;
     }
 
-    public MethodResponse addUser(User user) {
-        // 加密密码
-        user.setPassword(new BCryptPasswordEncoder(12).encode(user.getPassword()));
-        // 设置创建时间
-        user.setCreateDateTime(new Timestamp(System.currentTimeMillis()));
-        // 设置用户是否启用
-        user.setEnabled(true);
-        // 设置用户是否锁定
-        user.setLocked(false);
-        try {
-            userDao.saveAndFlush(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return MethodResponse.failure("projectY.UserService.addUser.failure.Exception", e.toString());
-        }
-        return MethodResponse.success("projectY.UserService.addUser.success");
-    }
-
     public Optional<User> findById(Integer id) {
         final Optional<User> optional = userDao.findById(id);
         if (optional.isPresent()) {
@@ -101,6 +83,24 @@ public class UserDetailService implements UserDetailsService {
         return page;
     }
 
+    public MethodResponse addUser(User user) {
+        // 加密密码
+        user.setPassword(new BCryptPasswordEncoder(12).encode(user.getPassword()));
+        // 设置创建时间
+        user.setCreateDateTime(new Timestamp(System.currentTimeMillis()));
+        // 设置用户是否启用
+        user.setEnabled(true);
+        // 设置用户是否锁定
+        user.setLocked(false);
+        try {
+            userDao.saveAndFlush(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MethodResponse.failure("projectY.UserService.addUser.failure.Exception", e.toString());
+        }
+        return MethodResponse.success("projectY.UserService.addUser.success");
+    }
+
     public MethodResponse updateUser(User user) {
         try {
             userDao.saveAndFlush(user);
@@ -109,6 +109,14 @@ public class UserDetailService implements UserDetailsService {
             return MethodResponse.failure("projectY.UserService.updateUser.failure.Exception", e.toString());
         }
         return MethodResponse.success("projectY.UserService.updateUser.success");
+    }
 
+    public MethodResponse deleteUser(int id) {
+        final Optional<User> optional = userDao.findById(id);
+        if (optional.isEmpty()) {
+            return MethodResponse.failure("projectY.UserService.deleteUser.failure.id-not-exist");
+        }
+        userDao.delete(optional.get());
+        return MethodResponse.success("projectY.UserService.deleteUser.success");
     }
 }

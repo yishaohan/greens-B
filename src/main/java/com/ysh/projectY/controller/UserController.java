@@ -75,9 +75,8 @@ public class UserController {
         methodResponse = userDetailService.addUser(user);
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
         }
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
     }
 
     @GetMapping("/admin/users")
@@ -124,8 +123,17 @@ public class UserController {
         final MethodResponse methodResponse = userDetailService.updateUser(user);
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
         }
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
+
+    }
+
+    @DeleteMapping("/admin/users/{id}")
+    public HttpEntity<?> deleteUser(@PathVariable(name = "id") int id) {
+        final MethodResponse methodResponse = userDetailService.deleteUser(id);
+        if (!methodResponse.isSuccess()) {
+            return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.NO_CONTENT.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
     }
 }
