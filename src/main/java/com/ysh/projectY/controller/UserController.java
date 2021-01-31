@@ -1,7 +1,8 @@
 package com.ysh.projectY.controller;
 
 import com.ysh.projectY.entity.User;
-import com.ysh.projectY.form.AddUser;
+import com.ysh.projectY.form.CreateUser;
+import com.ysh.projectY.form.RegisterUser;
 import com.ysh.projectY.form.UpdateUser;
 import com.ysh.projectY.service.SmsCaptchaService;
 import com.ysh.projectY.service.UserDetailService;
@@ -14,15 +15,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Optional;
-import java.util.TimeZone;
+import java.util.List;
 
 /**
  * rest 风格 api
@@ -56,23 +52,16 @@ public class UserController {
      * 新建用户
      * POST    /users        新建用户
      *
-     * @param addUser 新建用户表单
+     * @param registerUser 新建用户表单
      * @return http 响应
      */
     @PostMapping("/register") //???????????????????????????????????????????????????????????????????
-    public HttpEntity<?> addUser(@Valid @RequestBody AddUser addUser) {
-        System.out.println("UserForm验证完成!");
-        MethodResponse methodResponse = smsCaptchaService.verifySmsCaptcha(addUser.getMobilePhone(), addUser.getSmsCaptcha());
+    public HttpEntity<?> registerUser(@Valid @RequestBody RegisterUser registerUser) {
+        MethodResponse methodResponse = smsCaptchaService.verifySmsCaptcha(registerUser.getMobilePhone(), registerUser.getSmsCaptcha());
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }
-        User user = new User();
-        user.setUsername(addUser.getUsername());
-        user.setMobilePhone(addUser.getMobilePhone());
-        user.setPassword(addUser.getPassword());
-        user.setNickname(addUser.getNickname());
-        user.setAvatarURL(addUser.getAvatarURL());
-        methodResponse = userDetailService.addUser(user);
+        methodResponse = userDetailService.registerUser(registerUser);
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }
@@ -84,7 +73,7 @@ public class UserController {
                                   @RequestParam(name = "username", defaultValue = "") String username,
                                   @RequestParam(name = "mobilePhone", defaultValue = "") String mobilePhone,
                                   @RequestParam(name = "current", defaultValue = "1") int current,
-                                  @RequestParam(name = "pageSize", defaultValue = "6") int pageSize) {
+                                  @RequestParam(name = "pageSize", defaultValue = "5") int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize, Sort.by(Sort.Direction.ASC, "id"));
         final Page<User> users = userDetailService.getUsers(nickname, username, mobilePhone, pageable);
 //        final List<User> content = users.getContent();
@@ -99,33 +88,11 @@ public class UserController {
 
     @PutMapping("/admin/users")
     public HttpEntity<?> updateUser(@Valid @RequestBody UpdateUser updateUser) {
-        System.out.println("updateUser: " + updateUser);
-        final Optional<User> optional = userDetailService.findById(updateUser.getId());
-        User user = optional.get();
-        user.setNickname(updateUser.getNickname());
-        user.setUsername(updateUser.getUsername());
-        user.setMobilePhone(updateUser.getMobilePhone());
-        String newPassword = updateUser.getPassword();
-        newPassword = "770519";
-        if (newPassword != null && !"".equals(newPassword)) {
-            user.setPassword(new BCryptPasswordEncoder(12).encode(updateUser.getPassword()));
-        }
-        user.setAvatarURL(updateUser.getAvatarURL());
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        df.setTimeZone(TimeZone.getTimeZone("UTC"));
-        try {
-            user.setCreateDateTime(new Timestamp(df.parse(updateUser.getCreateDateTime()).getTime()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        user.setEnabled(updateUser.isEnabled());
-        user.setLocked(updateUser.isLocked());
-        final MethodResponse methodResponse = userDetailService.updateUser(user);
+        final MethodResponse methodResponse = userDetailService.updateUser(updateUser);
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }
         return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
-
     }
 
     @DeleteMapping("/admin/users/{id}")
@@ -135,5 +102,23 @@ public class UserController {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }
         return new ResponseEntity<>(JsonResponse.success(HttpStatus.NO_CONTENT.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/admin/users")
+    public HttpEntity<?> deleteUsers(@Valid @RequestBody List<Integer> ids) {
+        final MethodResponse methodResponse = userDetailService.deleteUsers(ids);
+        if (!methodResponse.isSuccess()) {
+            return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.NO_CONTENT.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+    }
+
+    @PostMapping("/admin/users")
+    public HttpEntity<?> createUser(@Valid @RequestBody CreateUser createUser) {
+        final MethodResponse methodResponse = userDetailService.createUser(createUser);
+        if (!methodResponse.isSuccess()) {
+            return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
     }
 }

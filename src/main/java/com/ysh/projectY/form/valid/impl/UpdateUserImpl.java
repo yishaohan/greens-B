@@ -27,14 +27,14 @@ public class UpdateUserImpl implements ConstraintValidator<UpdateUser, com.ysh.p
         context.disableDefaultConstraintViolation();
         final Optional<User> optional = userDetailService.findById(updateUser.getId());
         if (optional.isEmpty()) {
-            context.buildConstraintViolationWithTemplate("projectY.valid.user.id.not-exist").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate("projectY.valid.UpdateUser.id.not-exist").addConstraintViolation();
             return false;
         }
         User user = optional.get();
         if (!user.getUsername().equals(updateUser.getUsername())) {
             final Optional<User> byUsername = userDetailService.findByUsername(updateUser.getUsername());
             if (byUsername.isPresent()) {
-                context.buildConstraintViolationWithTemplate("projectY.valid.user.username.exist").addConstraintViolation();
+                context.buildConstraintViolationWithTemplate("projectY.valid.UpdateUser.username.exist").addConstraintViolation();
                 return false;
             }
         }
@@ -42,7 +42,7 @@ public class UpdateUserImpl implements ConstraintValidator<UpdateUser, com.ysh.p
         if (!user.getMobilePhone().equals(updateUser.getMobilePhone())) {
             final Optional<User> byMobilePhone = userDetailService.findByMobilePhone(updateUser.getMobilePhone());
             if (byMobilePhone.isPresent()) {
-                context.buildConstraintViolationWithTemplate("projectY.valid.user.mobile-phone.exist").addConstraintViolation();
+                context.buildConstraintViolationWithTemplate("projectY.valid.UpdateUser.mobile-phone.exist").addConstraintViolation();
                 return false;
             }
         }
@@ -53,7 +53,7 @@ public class UpdateUserImpl implements ConstraintValidator<UpdateUser, com.ysh.p
             try {
                 new Timestamp(df.parse(createDateTime).getTime());
             } catch (ParseException e) {
-                context.buildConstraintViolationWithTemplate("projectY.valid.user.createDateTime.incorrect-format").addConstraintViolation();
+                context.buildConstraintViolationWithTemplate("projectY.valid.UpdateUser.createDateTime.incorrect-format").addConstraintViolation();
                 return false;
             }
         }

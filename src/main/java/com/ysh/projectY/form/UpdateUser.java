@@ -11,36 +11,36 @@ import javax.validation.constraints.*;
 @GroupSequence({First.class, Second.class, UpdateUser.class})
 public class UpdateUser {
 
-    @NotNull(message = "project-y.valid.user.id.not-null", groups = First.class)
-    @DecimalMin(message = "project-y.valid.user.id.decimal-min", value = "1", groups = First.class)
+    @NotNull(message = "project-y.valid.UpdateUser.id.not-null", groups = First.class)
+    @DecimalMin(message = "project-y.valid.UpdateUser.id.decimal-min", value = "1", groups = First.class)
     private int id;
 
-    @Length(message = "project-y.valid.user.nickname.length", min = 3, max = 18, groups = First.class)
+    @Length(message = "project-y.valid.UpdateUser.nickname.length", min = 3, max = 18, groups = First.class)
     private String nickname;
 
-    @NotBlank(message = "project-y.valid.user.username.not-blank", groups = First.class)
-    @Email(message = "project-y.valid.user.username.email", groups = First.class)
+    @NotBlank(message = "project-y.valid.UpdateUser.username.not-blank", groups = First.class)
+    @Email(message = "project-y.valid.UpdateUser.username.email", groups = First.class)
     private String username;
 
-    @NotBlank(message = "project-y.valid.user.mobile-phone.not-blank", groups = First.class)
-    @Length(message = "project-y.valid.user.mobile-phone.length", min = 10, max = 11, groups = First.class)
-    @Pattern(regexp = "^[0-9]\\d{9,11}$", message = "project-y.valid.user.mobile-phone.digits", groups = First.class)
+    @NotBlank(message = "project-y.valid.UpdateUser.mobile-phone.not-blank", groups = First.class)
+    @Length(message = "project-y.valid.UpdateUser.mobile-phone.length", min = 10, max = 11, groups = First.class)
+    @Pattern(regexp = "^[0-9]\\d{9,11}$", message = "project-y.valid.UpdateUser.mobile-phone.digits", groups = First.class)
     private String mobilePhone;
 
     // 目前不检测密码的长度, 统一设置为770519
-    @Size(message = "project-y.valid.user.password.size", min = 6, max = 128, groups = First.class)
+    @Size(message = "project-y.valid.UpdateUser.password.size", min = 6, max = 128, groups = First.class)
     private String password;
 
-    @Length(message = "project-y.valid.user.avatarURL.length", min = 3, max = 128, groups = First.class)
+    @Length(message = "project-y.valid.UpdateUser.avatarURL.length", min = 3, max = 128, groups = First.class)
     private String avatarURL;
 
-    @NotNull(message = "project-y.valid.user.create-date-time.not-null", groups = First.class)
+    @NotNull(message = "project-y.valid.UpdateUser.create-date-time.not-null", groups = First.class)
     private String createDateTime;
 
-    @NotNull(message = "project-y.valid.user.enabled.not-null", groups = First.class)
+    @NotNull(message = "project-y.valid.UpdateUser.enabled.not-null", groups = First.class)
     private Boolean enabled;
 
-    @NotNull(message = "project-y.valid.user.locked.not-null", groups = First.class)
+    @NotNull(message = "project-y.valid.UpdateUser.locked.not-null", groups = First.class)
     private Boolean locked;
 
     public int getId() {

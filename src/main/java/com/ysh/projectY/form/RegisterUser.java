@@ -7,31 +7,31 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.GroupSequence;
 import javax.validation.constraints.*;
 
-@com.ysh.projectY.form.valid.AddUser(groups = Second.class)
-@GroupSequence({First.class, Second.class, AddUser.class})
-public class AddUser {
+@com.ysh.projectY.form.valid.RegisterUser(groups = Second.class)
+@GroupSequence({First.class, Second.class, RegisterUser.class})
+public class RegisterUser {
 
-    @NotBlank(message = "project-y.valid.user.username.not-blank", groups = First.class)
-    @Email(message = "project-y.valid.user.username.email", groups = First.class)
+    @NotBlank(message = "project-y.valid.RegisterUser.username.not-blank", groups = First.class)
+    @Email(message = "project-y.valid.RegisterUser.username.email", groups = First.class)
     private String username;
 
-    @NotBlank(message = "project-y.valid.user.mobile-phone.not-blank", groups = First.class)
-    @Length(message = "project-y.valid.user.mobile-phone.length", min = 10, max = 11, groups = First.class)
-    @Pattern(regexp = "^[0-9]\\d{9,11}$", message = "project-y.valid.user.mobile-phone.digits", groups = First.class)
+    @NotBlank(message = "project-y.valid.RegisterUser.mobile-phone.not-blank", groups = First.class)
+    @Length(message = "project-y.valid.RegisterUser.mobile-phone.length", min = 10, max = 11, groups = First.class)
+    @Pattern(regexp = "^[0-9]\\d{9,11}$", message = "project-y.valid.RegisterUser.mobile-phone.digits", groups = First.class)
     private String mobilePhone;
 
-    @NotBlank(message = "project-y.valid.user.password.not-blank", groups = First.class)
-    @Size(message = "project-y.valid.user.password.size", min = 6, max = 18, groups = First.class)
+    @NotBlank(message = "project-y.valid.RegisterUser.password.not-blank", groups = First.class)
+    @Size(message = "project-y.valid.RegisterUser.password.size", min = 6, max = 18, groups = First.class)
     private String password;
 
-    @Length(message = "project-y.valid.user.nickname.length", min = 3, max = 18, groups = First.class)
+    @Length(message = "project-y.valid.RegisterUser.nickname.length", min = 3, max = 18, groups = First.class)
     private String nickname;
 
     private String avatarURL;
 
-    @NotBlank(message = "project-y.valid.user.sms-captcha.not-blank", groups = First.class)
-    @Length(message = "project-y.valid.user.sms-captcha.length", min = 6, max = 6, groups = First.class)
-    @Pattern(regexp = "^[0-9]\\d{5}$", message = "project-y.valid.user.sms-captcha.digits", groups = First.class)
+    @NotBlank(message = "project-y.valid.RegisterUser.sms-captcha.not-blank", groups = First.class)
+    @Length(message = "project-y.valid.RegisterUser.sms-captcha.length", min = 6, max = 6, groups = First.class)
+    @Pattern(regexp = "^[0-9]\\d{5}$", message = "project-y.valid.RegisterUser.sms-captcha.digits", groups = First.class)
     private String smsCaptcha;
 
     public String getUsername() {
