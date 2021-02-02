@@ -16,14 +16,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.TimeZone;
+import java.util.*;
 
 @Service
 public class UserDetailService implements UserDetailsService {
@@ -93,6 +94,13 @@ public class UserDetailService implements UserDetailsService {
         user.setEnabled(true);
         // 设置用户是否锁定
         user.setLocked(false);
+        // 设置用户角色
+        List<Role> roles = new ArrayList<>();
+        final Optional<Role> optional = roleService.findByID(2);
+        if (optional.isPresent()) {
+            roles.add(optional.get());
+        }
+        user.setRoles(roles);
         try {
             userDao.saveAndFlush(user);
         } catch (Exception e) {
@@ -106,24 +114,38 @@ public class UserDetailService implements UserDetailsService {
         System.out.println("updateUser: " + updateUser);
         final Optional<User> optional = userDao.findById(updateUser.getId());
         User user = optional.get();
-        user.setNickname(updateUser.getNickname());
+        String newNickName = updateUser.getNickname();
+        if (newNickName != null && !"".equals(newNickName)) {
+            user.setNickname(newNickName);
+        }
         user.setUsername(updateUser.getUsername());
         user.setMobilePhone(updateUser.getMobilePhone());
         String newPassword = updateUser.getPassword();
-        newPassword = "770519";
         if (newPassword != null && !"".equals(newPassword)) {
-            user.setPassword(new BCryptPasswordEncoder(12).encode(updateUser.getPassword()));
+            user.setPassword(new BCryptPasswordEncoder(12).encode(newPassword));
         }
-        user.setAvatarURL(updateUser.getAvatarURL());
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        df.setTimeZone(TimeZone.getTimeZone("UTC"));
-        try {
-            user.setCreateDateTime(new Timestamp(df.parse(updateUser.getCreateDateTime()).getTime()));
-        } catch (ParseException e) {
-            e.printStackTrace();
+        String newAvatarURL = updateUser.getAvatarURL();
+        if (newAvatarURL != null && !"".equals(newAvatarURL)) {
+            user.setAvatarURL(newAvatarURL);
         }
-        user.setEnabled(updateUser.isEnabled());
-        user.setLocked(updateUser.isLocked());
+        String newCreateDateTime = updateUser.getCreateDateTime();
+        if (newCreateDateTime != null && !"".equals(newCreateDateTime)) {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            df.setTimeZone(TimeZone.getTimeZone("UTC"));
+            try {
+                user.setCreateDateTime(new Timestamp(df.parse(updateUser.getCreateDateTime()).getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        Boolean newEnabled = updateUser.getEnabled();
+        if (newEnabled != null) {
+            user.setEnabled(newEnabled);
+        }
+        Boolean newLocked = updateUser.getLocked();
+        if (newLocked != null) {
+            user.setLocked(newLocked);
+        }
         try {
             userDao.saveAndFlush(user);
         } catch (Exception e) {
@@ -187,5 +209,34 @@ public class UserDetailService implements UserDetailsService {
             return MethodResponse.failure("projectY.UserService.createUser.failure.Exception", e.toString());
         }
         return MethodResponse.success("projectY.UserService.createUser.success");
+    }
+
+    public MethodResponse createAvatar(MultipartFile uploadFile, HttpServletRequest req) {
+        if (uploadFile == null) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
+        String realPath = req.getSession().getServletContext().getRealPath("/uploadFile/");
+        System.out.println(realPath);
+        String format = sdf.format(new Date());
+        File folder = new File(realPath + format);
+        if (!folder.isDirectory()) {
+            folder.mkdirs();
+        }
+        System.out.println(folder.getAbsolutePath());
+        System.out.println(folder.getPath());
+        String oldName = uploadFile.getOriginalFilename();
+        String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."), oldName.length());
+        try {
+            uploadFile.transferTo(new File(folder, newName));
+            String filePath = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/uploadFile/" + format + newName;
+            return MethodResponse.success("projectY.UserService.createAvatar.success", "", filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return MethodResponse.failure("projectY.UserService.createAvatar.failure.IOException", e.toString(), e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MethodResponse.failure("projectY.UserService.createAvatar.failure.Exception", e.toString(), e);
+        }
     }
 }

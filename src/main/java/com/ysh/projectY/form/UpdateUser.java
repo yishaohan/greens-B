@@ -34,13 +34,13 @@ public class UpdateUser {
     @Length(message = "project-y.valid.UpdateUser.avatarURL.length", min = 3, max = 128, groups = First.class)
     private String avatarURL;
 
-    @NotNull(message = "project-y.valid.UpdateUser.create-date-time.not-null", groups = First.class)
+    // @NotNull(message = "project-y.valid.UpdateUser.create-date-time.not-null", groups = First.class)
     private String createDateTime;
 
-    @NotNull(message = "project-y.valid.UpdateUser.enabled.not-null", groups = First.class)
+    // @NotNull(message = "project-y.valid.UpdateUser.enabled.not-null", groups = First.class)
     private Boolean enabled;
 
-    @NotNull(message = "project-y.valid.UpdateUser.locked.not-null", groups = First.class)
+    // @NotNull(message = "project-y.valid.UpdateUser.locked.not-null", groups = First.class)
     private Boolean locked;
 
     public int getId() {
@@ -99,19 +99,19 @@ public class UpdateUser {
         this.createDateTime = createDateTime;
     }
 
-    public boolean isEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
-    public boolean isLocked() {
+    public Boolean getLocked() {
         return locked;
     }
 
-    public void setLocked(boolean locked) {
+    public void setLocked(Boolean locked) {
         this.locked = locked;
     }
 

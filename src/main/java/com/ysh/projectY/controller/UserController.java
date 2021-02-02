@@ -16,8 +16,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -116,6 +120,15 @@ public class UserController {
     @PostMapping("/admin/users")
     public HttpEntity<?> createUser(@Valid @RequestBody CreateUser createUser) {
         final MethodResponse methodResponse = userDetailService.createUser(createUser);
+        if (!methodResponse.isSuccess()) {
+            return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/admin/users/avatar")
+    public HttpEntity<?> createAvatar(@RequestPart("avatar") @Valid @NotNull @NotBlank MultipartFile uploadFile, HttpServletRequest req) {
+        final MethodResponse methodResponse = userDetailService.createAvatar(uploadFile, req);
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }
