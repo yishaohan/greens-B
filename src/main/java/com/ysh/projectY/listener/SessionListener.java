@@ -94,6 +94,9 @@ public class SessionListener {
                 loginLogs.setPassword("");
             }
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if (requestAttributes == null) {
+                System.out.println("************************************************requestAttributes************************************************");
+            }
             final HttpServletRequest req = requestAttributes.getRequest();
             if (req != null) {
                 String requestURI = req.getRequestURI();

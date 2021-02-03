@@ -9,6 +9,7 @@ import com.ysh.projectY.form.RegisterUser;
 import com.ysh.projectY.form.UpdateUser;
 import com.ysh.projectY.utils.MethodResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +35,9 @@ public class UserDetailService implements UserDetailsService {
 
     @Autowired
     RoleService roleService;
+
+    @Value("${projectY.api-base-path}")
+    private String apiBasePath;
 
 //    @Autowired
 //    RoleDao roleDao;
@@ -76,7 +80,7 @@ public class UserDetailService implements UserDetailsService {
 
     public Page<User> getUsers(String nickname, String username, String mobilePhone, Pageable pageable) {
         final Page<User> page = userDao.findAllByNicknameContainingAndUsernameContainingAndMobilePhoneContaining(nickname, username, mobilePhone, pageable);
-        final List<User> content = page.getContent();
+//        final List<User> content = page.getContent();
         return page;
     }
 
@@ -212,12 +216,11 @@ public class UserDetailService implements UserDetailsService {
     }
 
     public MethodResponse createAvatar(MultipartFile uploadFile, HttpServletRequest req) {
-        if (uploadFile == null) {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
-        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
-        String realPath = req.getSession().getServletContext().getRealPath("/uploadFile/");
-        System.out.println(realPath);
+//        String realPath = req.getSession().getServletContext().getRealPath("/uploadFile/");
+        final String property = System.getProperty("catalina.home");
+        String realPath = property + File.separator + "work" + File.separator + "resource" + File.separator + "avatars" + File.separator;
+        System.out.println("realPath: " + realPath);
         String format = sdf.format(new Date());
         File folder = new File(realPath + format);
         if (!folder.isDirectory()) {
@@ -229,7 +232,7 @@ public class UserDetailService implements UserDetailsService {
         String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."), oldName.length());
         try {
             uploadFile.transferTo(new File(folder, newName));
-            String filePath = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/uploadFile/" + format + newName;
+            String filePath = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + apiBasePath + "/user/avatars/" + format + newName;
             return MethodResponse.success("projectY.UserService.createAvatar.success", "", filePath);
         } catch (IOException e) {
             e.printStackTrace();

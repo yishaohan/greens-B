@@ -27,8 +27,8 @@ public interface UserDao extends JpaRepository<User, Integer> {
 //    @Query(value = "select r.* from project_y.role r,project_y.user_role ur where r.id=ur.role_id and ur.user_id=:userID", nativeQuery = true)
 //    List<Role> getUserRolesByUserId(int userID);
 
-    @Query(value = "select count(*) from project_y.user where mobile_phone=:mobilePhone", nativeQuery = true)
-    int isExistByMobilePhone(String mobilePhone);
+//    @Query(value = "select count(*) from project_y.user where mobile_phone=:mobilePhone", nativeQuery = true)
+//    int isExistByMobilePhone(String mobilePhone);
 
 
     Page<User> findAllByNicknameContainingAndUsernameContainingAndMobilePhoneContaining(String nickname, String username, String mobilePhone, Pageable pageable);
