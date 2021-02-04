@@ -2,7 +2,6 @@ package com.ysh.projectY.service;
 
 import com.ysh.projectY.dao.RoleDao;
 import com.ysh.projectY.entity.Role;
-import com.ysh.projectY.entity.User;
 import com.ysh.projectY.form.CreateRole;
 import com.ysh.projectY.form.UpdateRole;
 import com.ysh.projectY.utils.MethodResponse;
@@ -22,7 +21,7 @@ public class RoleService {
         this.roleDao = roleDao;
     }
 
-    public Optional<Role> findByID(int Id) {
+    public Optional<Role> findById(int Id) {
         return roleDao.findById(Id);
     }
 
@@ -57,23 +56,35 @@ public class RoleService {
         if (optional.isEmpty()) {
             return MethodResponse.failure("projectY.RoleService.deleteRole.failure.id-not-exist");
         }
+        if (roleDao.findUsedCountByRoleId(id) > 0) {
+            return MethodResponse.failure("projectY.RoleService.deleteRole.failure.role-is-used");
+        }
         roleDao.delete(optional.get());
         return MethodResponse.success("projectY.RoleService.deleteRole.success");
     }
 
     public MethodResponse deleteRoles(List<Integer> ids) {
-        StringBuilder detail = new StringBuilder();
+        StringBuilder roleNotExist = new StringBuilder();
+        StringBuilder roleIsUsed = new StringBuilder();
         for (Integer id : ids) {
             final Optional<Role> optional = roleDao.findById(id);
             if (optional.isEmpty()) {
-                detail.append(id).append(", ");
+                roleNotExist.append(id).append(", ");
+                continue;
+            }
+            if (roleDao.findUsedCountByRoleId(id) > 0) {
+                roleIsUsed.append(id).append(", ");
                 continue;
             }
             roleDao.delete(optional.get());
         }
-        if (!"".equals(detail.toString())) {
-            detail = new StringBuilder("[ " + detail.substring(0, detail.length() - 2) + " ] User not Exist");
-            return MethodResponse.failure("projectY.RoleService.deleteRoles.failure.ids-not-exist", detail.toString(), null);
+        if (!"".equals(roleIsUsed.toString())) {
+            roleIsUsed = new StringBuilder("[ " + roleIsUsed.substring(0, roleIsUsed.length() - 2) + " ] Role is Used");
+            return MethodResponse.failure("projectY.RoleService.deleteRoles.failure.ids-is-used", roleIsUsed.toString(), null);
+        }
+        if (!"".equals(roleNotExist.toString())) {
+            roleNotExist = new StringBuilder("[ " + roleNotExist.substring(0, roleNotExist.length() - 2) + " ] Role not Exist; ");
+            return MethodResponse.failure("projectY.RoleService.deleteRoles.failure.ids-not-exist", roleNotExist.toString(), null);
         }
         return MethodResponse.success("projectY.RoleService.deleteRoles.success");
     }

@@ -1,9 +1,7 @@
 package com.ysh.projectY.controller;
 
 import com.ysh.projectY.entity.User;
-import com.ysh.projectY.form.CreateUser;
-import com.ysh.projectY.form.RegisterUser;
-import com.ysh.projectY.form.UpdateUser;
+import com.ysh.projectY.form.*;
 import com.ysh.projectY.service.SmsCaptchaService;
 import com.ysh.projectY.service.UserDetailService;
 import com.ysh.projectY.utils.JsonResponse;
@@ -134,4 +132,23 @@ public class UserController {
         }
         return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
     }
+
+    @PostMapping("/admin/users/roles")
+    public HttpEntity<?> addUserRole(@Valid @RequestBody AddUserRole addUserRole) {
+        final MethodResponse methodResponse = userDetailService.addUserRole(addUserRole);
+        if (!methodResponse.isSuccess()) {
+            return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/admin/users/roles")
+    public HttpEntity<?> deleteUserRole(@Valid @RequestBody DeleteUserRole deleteUserRole) {
+        final MethodResponse methodResponse = userDetailService.deleteUserRole(deleteUserRole);
+        if (!methodResponse.isSuccess()) {
+            return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.NO_CONTENT.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+    }
+
 }

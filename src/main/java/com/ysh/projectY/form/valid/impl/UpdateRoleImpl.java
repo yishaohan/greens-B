@@ -19,7 +19,7 @@ public class UpdateRoleImpl implements ConstraintValidator<UpdateRole, com.ysh.p
     @Override
     public boolean isValid(com.ysh.projectY.form.UpdateRole updateRole, ConstraintValidatorContext context) {
         context.disableDefaultConstraintViolation();
-        final Optional<Role> optional = roleService.findByID(updateRole.getId());
+        final Optional<Role> optional = roleService.findById(updateRole.getId());
         if (optional.isEmpty()) {
             context.buildConstraintViolationWithTemplate("projectY.valid.UpdateRole.id.not-exist").addConstraintViolation();
             return false;

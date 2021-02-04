@@ -1,12 +1,9 @@
 package com.ysh.projectY.service;
 
-import com.ysh.projectY.dao.RoleDao;
 import com.ysh.projectY.dao.UserDao;
 import com.ysh.projectY.entity.Role;
 import com.ysh.projectY.entity.User;
-import com.ysh.projectY.form.CreateUser;
-import com.ysh.projectY.form.RegisterUser;
-import com.ysh.projectY.form.UpdateUser;
+import com.ysh.projectY.form.*;
 import com.ysh.projectY.utils.MethodResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -100,7 +97,7 @@ public class UserDetailService implements UserDetailsService {
         user.setLocked(false);
         // 设置用户角色
         List<Role> roles = new ArrayList<>();
-        final Optional<Role> optional = roleService.findByID(2);
+        final Optional<Role> optional = roleService.findById(2);
         if (optional.isPresent()) {
             roles.add(optional.get());
         }
@@ -201,7 +198,7 @@ public class UserDetailService implements UserDetailsService {
         user.setLocked(false);
         // 设置用户角色
         List<Role> roles = new ArrayList<>();
-        final Optional<Role> optional = roleService.findByID(2);
+        final Optional<Role> optional = roleService.findById(2);
         if (optional.isPresent()) {
             roles.add(optional.get());
         }
@@ -241,5 +238,35 @@ public class UserDetailService implements UserDetailsService {
             e.printStackTrace();
             return MethodResponse.failure("projectY.UserService.createAvatar.failure.Exception", e.toString(), e);
         }
+    }
+
+    public MethodResponse addUserRole(AddUserRole addUserRole) {
+        final Optional<User> o_user = userDao.findById(addUserRole.getUserID());
+        User user = o_user.get();
+        final Optional<Role> o_role = roleService.findById(addUserRole.getRoleID());
+        Role role = o_role.get();
+        user.getRoles().add(role);
+        try {
+            userDao.saveAndFlush(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MethodResponse.failure("projectY.UserService.addUserRole.failure.Exception", e.toString());
+        }
+        return MethodResponse.success("projectY.UserService.addUserRole.success");
+    }
+
+    public MethodResponse deleteUserRole(DeleteUserRole deleteUserRole) {
+        final Optional<User> o_user = userDao.findById(deleteUserRole.getUserID());
+        User user = o_user.get();
+        final Optional<Role> o_role = roleService.findById(deleteUserRole.getRoleID());
+        Role role = o_role.get();
+        user.getRoles().remove(role);
+        try {
+            userDao.saveAndFlush(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MethodResponse.failure("projectY.UserService.deleteUserRole.failure.Exception", e.toString());
+        }
+        return MethodResponse.success("projectY.UserService.deleteUserRole.success");
     }
 }

@@ -15,7 +15,7 @@ public class UpdateUser {
     @DecimalMin(message = "project-y.valid.UpdateUser.id.decimal-min", value = "1", groups = First.class)
     private int id;
 
-    @Length(message = "project-y.valid.UpdateUser.nickname.length", min = 3, max = 18, groups = First.class)
+    //    @Length(message = "project-y.valid.UpdateUser.nickname.length", min = 3, max = 18, groups = First.class)
     private String nickname;
 
     @NotBlank(message = "project-y.valid.UpdateUser.username.not-blank", groups = First.class)
