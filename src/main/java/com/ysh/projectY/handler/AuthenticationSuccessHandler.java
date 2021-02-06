@@ -46,7 +46,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
             loginLogs.setMobilePhone("Unknown Error!");
         }
         loginLogs.setLoginURL(requestURI);
-        final HttpSession session = req.getSession(false);
+        final HttpSession session = req.getSession(true);
         if (session != null) {
             loginLogs.setSessionID(session.getId());
         }

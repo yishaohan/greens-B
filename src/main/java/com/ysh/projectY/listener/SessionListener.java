@@ -69,10 +69,10 @@ public class SessionListener {
 //        System.out.println(requestAttributes.getRequest().getRequestURI());
 //        if (event instanceof InteractiveAuthenticationSuccessEvent || event instanceof AuthenticationSuccessEvent) {
 //            // rememberMe登陆时也会触发事件
-////            requestAttributes.getRequest().getSession().setAttribute("userName", ((AbstractAuthenticationToken) event.getSource()).getName());
+////            requestAttributes.getRequest().getSession(false).setAttribute("userName", ((AbstractAuthenticationToken) event.getSource()).getName());
 ////            ((InteractiveAuthenticationSuccessEvent)event)
 //        } else if (event instanceof AbstractAuthenticationFailureEvent || event instanceof LogoutSuccessEvent) {
-////            requestAttributes.getRequest().getSession().removeAttribute("userName");
+////            requestAttributes.getRequest().getSession(false).removeAttribute("userName");
 //        }
 //    }
 
@@ -94,18 +94,20 @@ public class SessionListener {
                 loginLogs.setPassword("");
             }
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            if (requestAttributes == null) {
-                System.out.println("************************************************requestAttributes************************************************");
-            }
-            final HttpServletRequest req = requestAttributes.getRequest();
-            if (req != null) {
-                String requestURI = req.getRequestURI();
-                loginLogs.setLoginURL(requestURI);
-                final HttpSession session = req.getSession();
-                if (session != null) {
-                    loginLogs.setSessionID(session.getId());
+            if (requestAttributes != null) {
+                final HttpServletRequest req = requestAttributes.getRequest();
+                if (req != null) {
+                    String requestURI = req.getRequestURI();
+                    loginLogs.setLoginURL(requestURI);
+                    final HttpSession session = req.getSession(true);
+                    if (session != null) {
+                        loginLogs.setSessionID(session.getId());
+                    }
+                    loginLogs.setClientIP(req.getRemoteAddr());
                 }
-                loginLogs.setClientIP(req.getRemoteAddr());
+            } else {
+                loginLogs.setLoginURL("unKnown");
+                loginLogs.setClientIP(((InteractiveAuthenticationSuccessEvent) event).getAuthentication().getDetails().toString());
             }
             loginLogs.setStatus("SUCCESS");
             loginLogs.setLoginDateTime(new Timestamp(System.currentTimeMillis()));
@@ -136,10 +138,40 @@ public class SessionListener {
 
     private void updateLoginLogs(String sessionID, String remarks) {
         List<LoginLogs> loginLogs = loginLogsService.findBySessionID(sessionID);
-        for (LoginLogs loginLog : loginLogs) {
-            loginLog.setLogoutDateTime(new Timestamp(System.currentTimeMillis()));
-            loginLog.setRemarks(remarks + ", " + loginLog.getRemarks());
+        if (loginLogs != null && loginLogs.size() > 0) {
+            System.out.println("1111111111111");
+            for (LoginLogs loginLog : loginLogs) {
+                loginLog.setLogoutDateTime(new Timestamp(System.currentTimeMillis()));
+                loginLog.setRemarks(remarks + ", " + loginLog.getRemarks());
+            }
+            loginLogsService.saveAll(loginLogs);
+        } else {
+            System.out.println("2222222222222");
+            LoginLogs incompleteLoginLogs = new LoginLogs();
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth == null) {
+                System.out.println("3333333333333");
+            }
+            User user = null;
+            if (auth != null) {
+                try {
+                    user = (User) auth.getPrincipal();
+                } catch (ClassCastException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.println("USER: " + user);
+                if (user != null) {
+                    incompleteLoginLogs.setUsername(user.getUsername());
+                    incompleteLoginLogs.setMobilePhone(user.getMobilePhone());
+                    incompleteLoginLogs.setPassword("");
+                    incompleteLoginLogs.setLogoutDateTime(new Timestamp(System.currentTimeMillis()));
+                    incompleteLoginLogs.setRemarks(remarks);
+                    loginLogsService.saveAndFlush(incompleteLoginLogs);
+                }
+            }
+
         }
-        loginLogsService.saveAll(loginLogs);
     }
 }

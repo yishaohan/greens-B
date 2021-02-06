@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,17 +37,6 @@ public class UserDetailService implements UserDetailsService {
 
     @Value("${projectY.api-base-path}")
     private String apiBasePath;
-
-//    @Autowired
-//    RoleDao roleDao;
-
-//    private void getUserRoles(User user) {
-//        user.setRoles(roleDao.getUserRolesByUserId(user.getId()));
-//    }
-
-    private void erasePassword(User user) {
-        user.setPassword("");
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -75,9 +66,25 @@ public class UserDetailService implements UserDetailsService {
         userDao.saveAndFlush(user);
     }
 
+    // 获取当前用户信息
+    public MethodResponse getUser() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user;
+        try {
+            user = (User) authentication.getPrincipal();
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+            System.out.println(authentication.getPrincipal());
+            return MethodResponse.failure("projectY.UserService.getUser.failure.ClassCastException", e.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MethodResponse.failure("projectY.UserService.getUser.failure.Exception", e.toString());
+        }
+        return MethodResponse.success("projectY.UserService.getUser.success", "", user);
+    }
+
     public Page<User> getUsers(String nickname, String username, String mobilePhone, Pageable pageable) {
         final Page<User> page = userDao.findAllByNicknameContainingAndUsernameContainingAndMobilePhoneContaining(nickname, username, mobilePhone, pageable);
-//        final List<User> content = page.getContent();
         return page;
     }
 
@@ -214,7 +221,7 @@ public class UserDetailService implements UserDetailsService {
 
     public MethodResponse createAvatar(MultipartFile uploadFile, HttpServletRequest req) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
-//        String realPath = req.getSession().getServletContext().getRealPath("/uploadFile/");
+//        String realPath = req.getSession(false).getServletContext().getRealPath("/uploadFile/");
         final String property = System.getProperty("catalina.home");
         String realPath = property + File.separator + "work" + File.separator + "resource" + File.separator + "avatars" + File.separator;
         System.out.println("realPath: " + realPath);

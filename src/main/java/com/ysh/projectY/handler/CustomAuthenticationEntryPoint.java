@@ -26,6 +26,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest req, HttpServletResponse resp, AuthenticationException authException) throws IOException {
         System.out.println("2. +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         authException.printStackTrace();
+        resp.setStatus(401);
         resp.setHeader("Access-Control-Allow-Headers", "*");
         resp.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT");
         resp.setHeader("Access-Control-Allow-Origin", allowedOrigins);

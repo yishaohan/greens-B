@@ -19,7 +19,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsUtils;
 
 import java.util.Collections;
 
@@ -126,7 +125,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.sessionManagement()
                 .sessionAuthenticationFailureHandler(authenticationFailureHandler)
 //                .invalidSessionUrl(apiBasePath + "/invalidSession")
-                .maximumSessions(1)
+                .maximumSessions(2)
 //                .expiredUrl(apiBasePath + "/expiredSession")
                 .maxSessionsPreventsLogin(false);
 
@@ -172,5 +171,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         roleHierarchy.setHierarchy(hierarchy);
         return roleHierarchy;
     }
-
 }

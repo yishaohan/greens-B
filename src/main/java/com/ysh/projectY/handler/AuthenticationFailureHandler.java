@@ -61,7 +61,7 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
         loginLogs.setPassword(password);
         loginLogs.setMobilePhone(mobilePhone);
         loginLogs.setLoginURL(requestURI);
-        loginLogs.setSessionID(req.getSession().getId());
+        loginLogs.setSessionID(req.getSession(true).getId());
         loginLogs.setClientIP(req.getRemoteAddr());
         loginLogs.setStatus("FAILURE");
         loginLogs.setLoginDateTime(new Timestamp(System.currentTimeMillis()));

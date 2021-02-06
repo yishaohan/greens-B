@@ -21,7 +21,7 @@ public class LoginLogs {
     @Column(name = "`password`", columnDefinition = "varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '密码'")
     private String password;
 
-    @Column(name = "`login_url`", columnDefinition = "varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '来源'")
+    @Column(name = "`login_url`", columnDefinition = "varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '来源'")
     private String loginURL;
 
     @Column(name = "`session_id`", columnDefinition = "varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci comment '会话ID'")

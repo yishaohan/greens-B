@@ -13,6 +13,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -50,6 +54,8 @@ public class UserController {
         this.smsCaptchaService = smsCaptchaService;
     }
 
+    // 匿名用户可以访问
+
     /**
      * 新建用户
      * POST    /users        新建用户
@@ -57,7 +63,7 @@ public class UserController {
      * @param registerUser 新建用户表单
      * @return http 响应
      */
-    @PostMapping("/register") //???????????????????????????????????????????????????????????????????
+    @PostMapping("/register")
     public HttpEntity<?> registerUser(@Valid @RequestBody RegisterUser registerUser) {
         MethodResponse methodResponse = smsCaptchaService.verifySmsCaptcha(registerUser.getMobilePhone(), registerUser.getSmsCaptcha());
         if (!methodResponse.isSuccess()) {
@@ -70,6 +76,17 @@ public class UserController {
         return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
     }
 
+    // 普通用户可以访问
+    @GetMapping("/user/user")
+    public HttpEntity<?> getUser() {
+        final MethodResponse methodResponse = userDetailService.getUser();
+        if (!methodResponse.isSuccess()) {
+            return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+    }
+
+    // 管理员可以访问
     @GetMapping("/admin/users")
     public HttpEntity<?> getUsers(@RequestParam(name = "nickname", defaultValue = "") String nickname,
                                   @RequestParam(name = "username", defaultValue = "") String username,
