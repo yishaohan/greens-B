@@ -145,7 +145,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ValidationException.class)
     public HttpEntity<?> validation(ValidationException e) {
-//        e.printStackTrace();
+        e.printStackTrace();
 //        String message = e.getCause().getMessage();
         List<String> errorsKey = new ArrayList<>();
         errorsKey.add(e.getMessage());

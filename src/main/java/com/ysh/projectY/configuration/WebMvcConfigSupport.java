@@ -14,6 +14,7 @@ public class WebMvcConfigSupport extends WebMvcConfigurationSupport {
 //    @Value("${projectY.api-base-path}")
 //    private String apiBasePath;
 //
+//    以下方式会导致RememberMe登录时,得不到请求的URL, 换成WebMvcConfig的addResourceHandlers()方法, 绕过此问题
 //    @Override
 //    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 //        final String property = System.getProperty("catalina.home");

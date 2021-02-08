@@ -14,7 +14,7 @@ public class SmsCaptchaImpl implements ConstraintValidator<SmsCaptcha, com.ysh.p
     SmsCaptchaService smsCaptchaService;
 
     // register: 注册时需要短信验证码
-    //    login: 支持手机号/短信验证码登录
+    // login: 支持手机号/短信验证码登录
     private final String[] ALL_SOURCE = {"register", "login"};
 
     @Override

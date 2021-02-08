@@ -13,7 +13,7 @@ public class UpdateRole {
 
     @NotNull(message = "project-y.valid.UpdateRole.id.not-null", groups = First.class)
     @DecimalMin(message = "project-y.valid.UpdateRole.id.decimal-min", value = "1", groups = First.class)
-    private int id;
+    private Integer id;
 
     @NotBlank(message = "project-y.valid.UpdateRole.roleName.not-blank", groups = First.class)
     @Length(message = "project-y.valid.UpdateRole.roleName.length", min = 6, max = 18, groups = First.class)

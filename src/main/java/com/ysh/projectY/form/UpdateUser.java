@@ -13,7 +13,7 @@ public class UpdateUser {
 
     @NotNull(message = "project-y.valid.UpdateUser.id.not-null", groups = First.class)
     @DecimalMin(message = "project-y.valid.UpdateUser.id.decimal-min", value = "1", groups = First.class)
-    private int id;
+    private Integer id;
 
     //    @Length(message = "project-y.valid.UpdateUser.nickname.length", min = 3, max = 18, groups = First.class)
     private String nickname;

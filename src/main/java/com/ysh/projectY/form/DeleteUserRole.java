@@ -13,11 +13,11 @@ public class DeleteUserRole {
 
     @NotNull(message = "project-y.valid.DeleteUserRole.userID.not-null", groups = First.class)
     @DecimalMin(message = "project-y.valid.DeleteUserRole.userID.decimal-min", value = "1", groups = First.class)
-    private int userID;
+    private Integer userID;
 
     @NotNull(message = "project-y.valid.DeleteUserRole.roleID.not-null", groups = First.class)
     @DecimalMin(message = "project-y.valid.DeleteUserRole.roleID.decimal-min", value = "1", groups = First.class)
-    private int roleID;
+    private Integer roleID;
 
     public int getUserID() {
         return userID;
