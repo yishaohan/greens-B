@@ -3,6 +3,7 @@ package com.ysh.projectY.controller;
 import com.ysh.projectY.entity.Role;
 import com.ysh.projectY.form.CreateRole;
 import com.ysh.projectY.form.UpdateRole;
+import com.ysh.projectY.form.UpdateRoleAuths;
 import com.ysh.projectY.service.RoleService;
 import com.ysh.projectY.utils.JsonResponse;
 import com.ysh.projectY.utils.MethodResponse;
@@ -68,6 +69,15 @@ public class RoleController {
     @PostMapping("/admin/roles")
     public HttpEntity<?> createRole(@Valid @RequestBody CreateRole createRole) {
         final MethodResponse methodResponse = roleService.createRole(createRole);
+        if (!methodResponse.isSuccess()) {
+            return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/admin/roles/auths")
+    public HttpEntity<?> updateRoleAuths(@Valid @RequestBody UpdateRoleAuths updateRoleAuths) {
+        final MethodResponse methodResponse = roleService.updateRoleAuths(updateRoleAuths);
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }

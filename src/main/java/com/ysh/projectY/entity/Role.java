@@ -3,6 +3,7 @@ package com.ysh.projectY.entity;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity(name = "role")
@@ -21,6 +22,10 @@ public class Role {
     @ColumnDefault("1")
     @Column(name = "`role_enabled`", columnDefinition = "tinyint(1) NOT NULL comment '角色是否启用'")
     private boolean enabled;
+
+    //    @Transient
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<Authorization> auths;
 
     public int getId() {
         return id;
@@ -52,6 +57,14 @@ public class Role {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public List<Authorization> getAuths() {
+        return auths;
+    }
+
+    public void setAuths(List<Authorization> auths) {
+        this.auths = auths;
     }
 
     @Override

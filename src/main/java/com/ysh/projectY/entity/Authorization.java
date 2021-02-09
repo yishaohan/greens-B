@@ -6,6 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity(name = "authorization")
 public class Authorization {
@@ -125,6 +126,23 @@ public class Authorization {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Authorization that = (Authorization) o;
+        return id == that.id && authName.equals(that.authName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, authName);
     }
 
     @Override

@@ -1,9 +1,11 @@
 package com.ysh.projectY.service;
 
 import com.ysh.projectY.dao.RoleDao;
+import com.ysh.projectY.entity.Authorization;
 import com.ysh.projectY.entity.Role;
 import com.ysh.projectY.form.CreateRole;
 import com.ysh.projectY.form.UpdateRole;
+import com.ysh.projectY.form.UpdateRoleAuths;
 import com.ysh.projectY.utils.MethodResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,9 +18,11 @@ import java.util.Optional;
 public class RoleService {
 
     final RoleDao roleDao;
+    final AuthorizationService authService;
 
-    public RoleService(RoleDao roleDao) {
+    public RoleService(RoleDao roleDao, AuthorizationService authService) {
         this.roleDao = roleDao;
+        this.authService = authService;
     }
 
     public Optional<Role> findById(int Id) {
@@ -105,5 +109,47 @@ public class RoleService {
 
     public Optional<Role> findByRoleName(String roleName) {
         return roleDao.findByRoleName(roleName);
+    }
+
+    public MethodResponse updateRoleAuths(UpdateRoleAuths updateRoleAuths) {
+        StringBuilder addAuthsDetail = new StringBuilder();
+        StringBuilder removeAuthsDetail = new StringBuilder();
+        final List<Integer> addAuthIds = updateRoleAuths.getAddAuthIds();
+        final List<Integer> removeAuthIds = updateRoleAuths.getRemoveAuthIds();
+        final Optional<Role> o_role = roleDao.findById(updateRoleAuths.getRoleId());
+        if (o_role.isEmpty()) {
+            return MethodResponse.failure("projectY.RoleService.updateRoleAuths.failure.roleId-not-exist", null, null);
+        }
+        Role role = o_role.get();
+        final List<Authorization> auths = role.getAuths();
+        for (Integer addAuthId : addAuthIds) {
+            final Optional<Authorization> o_auth = authService.findById(addAuthId);
+            if (o_auth.isEmpty()) {
+                addAuthsDetail.append(addAuthId).append(", ");
+                continue;
+            }
+            Authorization auth = o_auth.get();
+            if (!auths.contains(auth)) {
+                auths.add(auth);
+            }
+        }
+        for (Integer removeAuthId : removeAuthIds) {
+            final Optional<Authorization> o_auth = authService.findById(removeAuthId);
+            if (o_auth.isEmpty()) {
+                removeAuthsDetail.append(removeAuthId).append(", ");
+                continue;
+            }
+            Authorization auth = o_auth.get();
+            if (auths.contains(auth)) {
+                auths.remove(auth);
+            }
+        }
+        try {
+            roleDao.saveAndFlush(role);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MethodResponse.failure("projectY.RoleService.updateRoleAuths.failure.Exception", e.toString());
+        }
+        return MethodResponse.success("projectY.RoleService.updateRoleAuths.success");
     }
 }
