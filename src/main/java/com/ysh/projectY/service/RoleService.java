@@ -2,10 +2,12 @@ package com.ysh.projectY.service;
 
 import com.ysh.projectY.dao.RoleDao;
 import com.ysh.projectY.entity.Authorization;
+import com.ysh.projectY.entity.Menu;
 import com.ysh.projectY.entity.Role;
 import com.ysh.projectY.form.CreateRole;
 import com.ysh.projectY.form.UpdateRole;
 import com.ysh.projectY.form.UpdateRoleAuths;
+import com.ysh.projectY.form.UpdateRoleMenus;
 import com.ysh.projectY.utils.MethodResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +21,12 @@ public class RoleService {
 
     final RoleDao roleDao;
     final AuthorizationService authService;
+    final MenuService menuService;
 
-    public RoleService(RoleDao roleDao, AuthorizationService authService) {
+    public RoleService(RoleDao roleDao, AuthorizationService authService, final MenuService menuService) {
         this.roleDao = roleDao;
         this.authService = authService;
+        this.menuService = menuService;
     }
 
     public Optional<Role> findById(int Id) {
@@ -151,5 +155,47 @@ public class RoleService {
             return MethodResponse.failure("projectY.RoleService.updateRoleAuths.failure.Exception", e.toString());
         }
         return MethodResponse.success("projectY.RoleService.updateRoleAuths.success");
+    }
+
+    public MethodResponse updateRoleMenus(UpdateRoleMenus updateRoleMenus) {
+        StringBuilder addMenusDetail = new StringBuilder();
+        StringBuilder removeMenusDetail = new StringBuilder();
+        final List<Integer> addMenuIds = updateRoleMenus.getAddMenuIds();
+        final List<Integer> removeMenuIds = updateRoleMenus.getRemoveMenuIds();
+        final Optional<Role> o_role = roleDao.findById(updateRoleMenus.getRoleId());
+        if (o_role.isEmpty()) {
+            return MethodResponse.failure("projectY.RoleService.updateRoleMenus.failure.roleId-not-exist", null, null);
+        }
+        Role role = o_role.get();
+        final List<Menu> menus = role.getMenus();
+        for (Integer addMenuId : addMenuIds) {
+            final Optional<Menu> o_menu = menuService.findById(addMenuId);
+            if (o_menu.isEmpty()) {
+                addMenusDetail.append(addMenuId).append(", ");
+                continue;
+            }
+            Menu menu = o_menu.get();
+            if (!menus.contains(menu)) {
+                menus.add(menu);
+            }
+        }
+        for (Integer removeMenuId : removeMenuIds) {
+            final Optional<Menu> o_menu = menuService.findById(removeMenuId);
+            if (o_menu.isEmpty()) {
+                removeMenusDetail.append(removeMenuId).append(", ");
+                continue;
+            }
+            Menu menu = o_menu.get();
+            if (menus.contains(menu)) {
+                menus.remove(menu);
+            }
+        }
+        try {
+            roleDao.saveAndFlush(role);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return MethodResponse.failure("projectY.RoleService.updateRoleMenus.failure.Exception", e.toString());
+        }
+        return MethodResponse.success("projectY.RoleService.updateRoleMenus.success");
     }
 }

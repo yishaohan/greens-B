@@ -24,21 +24,22 @@ public class UpdateAuthImpl implements ConstraintValidator<UpdateAuth, com.ysh.p
         context.disableDefaultConstraintViolation();
         final int parentId = updateAuth.getParentId();
         final int authGrade = updateAuth.getAuthGrade();
+        final String authName = updateAuth.getAuthName();
         final String authDescript = updateAuth.getAuthDescript();
         final String requestUrl = updateAuth.getRequestUrl();
         final String requestMethod = updateAuth.getRequestMethod();
 
-        if (updateAuth.getId() == updateAuth.getParentId()) {
-            context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.parentId.incorrect-value ").addConstraintViolation();
+        if (updateAuth.getId().equals(updateAuth.getParentId())) {
+            context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.parentId.incorrect-value").addConstraintViolation();
             return false;
         }
         if (!(authGrade == 1 || authGrade == 2)) {
-            context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.authGrade.incorrect-value ").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.authGrade.incorrect-value").addConstraintViolation();
             return false;
         }
         if (authGrade == 1) {
             if (parentId != 0) {
-                context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.authGrade.parent-id-incorrect-value ").addConstraintViolation();
+                context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.authGrade.parent-id-incorrect-value").addConstraintViolation();
                 return false;
             }
             updateAuth.setRequestMethod("-");
@@ -67,6 +68,14 @@ public class UpdateAuthImpl implements ConstraintValidator<UpdateAuth, com.ysh.p
         if (o_auth.isEmpty()) {
             context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.id.not-exist").addConstraintViolation();
             return false;
+        } else {
+            Authorization auth = o_auth.get();
+            if (!auth.getAuthName().equals(authName)) {
+                final Optional<Authorization> o_authName = authService.findByAuthName(authName);
+                if (o_authName.isPresent()) {
+                    context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.id.authName-exist").addConstraintViolation();
+                }
+            }
         }
         final Optional<Authorization> o_parent = authService.findById(parentId);
         if (parentId != 0) {

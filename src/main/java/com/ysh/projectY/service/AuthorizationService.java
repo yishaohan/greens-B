@@ -22,8 +22,8 @@ public class AuthorizationService {
         this.authDao = authDao;
     }
 
-    public Page<Authorization> getAuths(String authName, String requestMethod, String requestUrl, Pageable pageable) {
-        final Page<Authorization> page = authDao.findAllByAuthNameContainingAndRequestMethodContainingAndRequestUrlContaining(authName, requestMethod, requestUrl, pageable);
+    public Page<Authorization> getAuths(String authName, String authDescript, String requestUrl, String requestMethod, Pageable pageable) {
+        final Page<Authorization> page = authDao.findAllByAuthNameContainingAndAuthDescriptContainingAndRequestUrlContainingAndRequestMethodContaining(authName, authDescript, requestUrl, requestMethod, pageable);
         return page;
     }
 
@@ -105,5 +105,9 @@ public class AuthorizationService {
 
     public List<Authorization> findByAuthGradeLessThan(int authGrade) {
         return authDao.findByAuthGradeLessThan(authGrade);
+    }
+
+    public Optional<Authorization> findByAuthName(String authName) {
+        return authDao.findByAuthName(authName);
     }
 }

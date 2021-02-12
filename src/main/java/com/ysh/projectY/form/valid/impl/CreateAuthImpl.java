@@ -24,6 +24,7 @@ public class CreateAuthImpl implements ConstraintValidator<CreateAuth, com.ysh.p
         context.disableDefaultConstraintViolation();
         final int parentId = createAuth.getParentId();
         final int authGrade = createAuth.getAuthGrade();
+        final String authName = createAuth.getAuthName();
         final String authDescript = createAuth.getAuthDescript();
         final String requestUrl = createAuth.getRequestUrl();
         final String requestMethod = createAuth.getRequestMethod();
@@ -62,11 +63,16 @@ public class CreateAuthImpl implements ConstraintValidator<CreateAuth, com.ysh.p
             createAuth.setAuthDescript("-");
         }
         if (!(requestUrl.startsWith("/api/v1"))) {
-            context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.requestUrl.incorrect-value ").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.requestUrl.incorrect-value").addConstraintViolation();
             return false;
         }
         if (!Arrays.asList(REQUEST_METHOD).contains(requestMethod)) {
-            context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.requestMethod.incorrect-value ").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.requestMethod.incorrect-value").addConstraintViolation();
+            return false;
+        }
+        final Optional<Authorization> optional = authService.findByAuthName(authName);
+        if (optional.isPresent()) {
+            context.buildConstraintViolationWithTemplate("projectY.valid.UpdateAuth.authName.exist").addConstraintViolation();
             return false;
         }
         return true;

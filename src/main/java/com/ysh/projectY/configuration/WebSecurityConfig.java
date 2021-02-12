@@ -80,6 +80,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.addFilterBefore(new UsernamePasswordLoginFilter(authenticationFailureHandler), UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.authorizeRequests()
+                .antMatchers(apiBasePath + "/admin/users/**")
+                .hasRole("userAdmin")
+                .antMatchers(apiBasePath + "/admin/roles/**")
+                .hasRole("authAdmin")
+                .antMatchers(apiBasePath + "/admin/auths/**")
+                .hasRole("authAdmin")
+                .antMatchers(apiBasePath + "/admin/menus/**")
+                .hasRole("authAdmin")
                 .antMatchers(apiBasePath + "/admin/**")
                 .hasRole("admin")
                 .antMatchers(apiBasePath + "/users/**")
@@ -125,7 +133,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.sessionManagement()
                 .sessionAuthenticationFailureHandler(authenticationFailureHandler)
 //                .invalidSessionUrl(apiBasePath + "/invalidSession")
-                .maximumSessions(2)
+                .maximumSessions(1)
 //                .expiredUrl(apiBasePath + "/expiredSession")
                 .maxSessionsPreventsLogin(false);
 
@@ -167,8 +175,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        String hierarchy = "ROLE_admin > ROLE_user";
+        String hierarchy = "ROLE_admin > ROLE_user \n ROLE_admin > ROLE_userAdmin \n ROLE_admin > ROLE_authAdmin";
         roleHierarchy.setHierarchy(hierarchy);
+
         return roleHierarchy;
     }
 }

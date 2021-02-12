@@ -99,3 +99,9 @@ The following guides illustrate how to use some features concretely:
 * 登陆失败不会发布Event
 
 * COSR错误
+
+**********************************
+
+* 优化前端提交数据的验证步骤
+* 优化Authorization实体类
+* 用户删除角色有问题

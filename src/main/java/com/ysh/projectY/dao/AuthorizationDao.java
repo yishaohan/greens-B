@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AuthorizationDao extends JpaRepository<Authorization, Integer> {
-    Page<Authorization> findAllByAuthNameContainingAndRequestMethodContainingAndRequestUrlContaining(String authName, String requestMethod, String requestUrl, Pageable pageable);
+    Page<Authorization> findAllByAuthNameContainingAndAuthDescriptContainingAndRequestUrlContainingAndRequestMethodContaining(String authName, String authDescript, String requestUrl, String requestMethod, Pageable pageable);
 
     List<Authorization> findByAuthGradeLessThan(int authGrade);
+
+    Optional<Authorization> findByAuthName(String authName);
 }

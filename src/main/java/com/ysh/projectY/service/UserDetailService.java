@@ -263,13 +263,17 @@ public class UserDetailService implements UserDetailsService {
     }
 
     public MethodResponse deleteUserRole(DeleteUserRole deleteUserRole) {
+        System.out.println(deleteUserRole.getUserID() + " - " + deleteUserRole.getRoleID());
         final Optional<User> o_user = userDao.findById(deleteUserRole.getUserID());
         User user = o_user.get();
+        System.out.println("1. " + user);
         final Optional<Role> o_role = roleService.findById(deleteUserRole.getRoleID());
         Role role = o_role.get();
+        System.out.println("2. " + role);
         user.getRoles().remove(role);
         try {
             userDao.saveAndFlush(user);
+            System.out.println("3. " + user);
         } catch (Exception e) {
             e.printStackTrace();
             return MethodResponse.failure("projectY.UserService.deleteUserRole.failure.Exception", e.toString());

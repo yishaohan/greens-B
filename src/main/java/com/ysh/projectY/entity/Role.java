@@ -1,6 +1,8 @@
 package com.ysh.projectY.entity;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,7 +27,12 @@ public class Role {
 
     //    @Transient
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Authorization> auths;
+
+    //    @Transient
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<Menu> menus;
 
     public int getId() {
         return id;
@@ -67,6 +74,14 @@ public class Role {
         this.auths = auths;
     }
 
+    public List<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -76,12 +91,12 @@ public class Role {
             return false;
         }
         Role role = (Role) o;
-        return id == role.id;
+        return id == role.id && roleName.equals(role.roleName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, roleName);
     }
 
     @Override
@@ -91,6 +106,8 @@ public class Role {
                 ", roleName='" + roleName + '\'' +
                 ", roleDescript='" + roleDescript + '\'' +
                 ", enabled=" + enabled +
+                ", auths=" + auths +
+                ", menus=" + menus +
                 '}';
     }
 }

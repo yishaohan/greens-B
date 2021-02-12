@@ -49,27 +49,27 @@ public class UpdateAuth {
     // @NotNull(message = "project-y.valid.UpdateAuth.enabled.not-null", groups = First.class)
     private Boolean enabled;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
-    public int getAuthGrade() {
+    public Integer getAuthGrade() {
         return authGrade;
     }
 
-    public void setAuthGrade(int authGrade) {
+    public void setAuthGrade(Integer authGrade) {
         this.authGrade = authGrade;
     }
 

@@ -87,7 +87,7 @@ public class UserController {
     }
 
     // 管理员可以访问
-    @GetMapping("/admin/users")
+    @GetMapping(value = {"/admin/users"})
     public HttpEntity<?> getUsers(@RequestParam(name = "nickname", defaultValue = "") String nickname,
                                   @RequestParam(name = "username", defaultValue = "") String username,
                                   @RequestParam(name = "mobilePhone", defaultValue = "") String mobilePhone,

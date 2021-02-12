@@ -21,7 +21,7 @@ public class CreateRoleImpl implements ConstraintValidator<CreateRole, com.ysh.p
             context.buildConstraintViolationWithTemplate("projectY.valid.CreateRole.RoleName.exist").addConstraintViolation();
             return false;
         }
-        if (createRole.getRoleDescript() == null || "".equals(createRole.getRoleDescript())) {
+        if (createRole.getRoleDescript() == null) {
             createRole.setRoleDescript("");
         }
         return true;

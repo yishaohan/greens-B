@@ -1,9 +1,9 @@
 package com.ysh.projectY.controller;
 
-import com.ysh.projectY.entity.Authorization;
-import com.ysh.projectY.form.CreateAuth;
-import com.ysh.projectY.form.UpdateAuth;
-import com.ysh.projectY.service.AuthorizationService;
+import com.ysh.projectY.entity.Menu;
+import com.ysh.projectY.form.CreateMenu;
+import com.ysh.projectY.form.UpdateMenu;
+import com.ysh.projectY.service.MenuService;
 import com.ysh.projectY.utils.JsonResponse;
 import com.ysh.projectY.utils.MethodResponse;
 import org.springframework.data.domain.Page;
@@ -20,66 +20,64 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "${projectY.api-base-path}")
-public class AuthorizationController {
+public class MenuController {
 
-    final AuthorizationService authService;
+    final MenuService menuService;
 
-    public AuthorizationController(AuthorizationService authService) {
-        this.authService = authService;
+    public MenuController(MenuService menuService) {
+        this.menuService = menuService;
     }
 
-    @GetMapping("/admin/auths")
-    public HttpEntity<?> getAuths(@RequestParam(name = "authName", defaultValue = "") String authName,
-                                  @RequestParam(name = "authDescript", defaultValue = "") String authDescript,
-                                  @RequestParam(name = "requestUrl", defaultValue = "") String requestUrl,
-                                  @RequestParam(name = "requestMethod", defaultValue = "") String requestMethod,
+    @GetMapping("/admin/menus")
+    public HttpEntity<?> getMenus(@RequestParam(name = "menuName", defaultValue = "") String menuName,
+                                  @RequestParam(name = "menuDescript", defaultValue = "") String menuDescript,
+                                  @RequestParam(name = "menuPath", defaultValue = "") String menuPath,
                                   @RequestParam(name = "current", defaultValue = "1") int current,
                                   @RequestParam(name = "pageSize", defaultValue = "5") int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize, Sort.by(Sort.Direction.ASC, "id"));
-        final Page<Authorization> auths = authService.getAuths(authName, authDescript, requestUrl, requestMethod, pageable);
-        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.AuthController.getAuths.success", auths, auths.toString()), HttpStatus.OK);
+        final Page<Menu> menus = menuService.getMenus(menuName, menuDescript, menuPath, pageable);
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.MenuController.getMenus.success", menus, menus.toString()), HttpStatus.OK);
     }
 
-    @GetMapping("/admin/auths/authGrade")
-    public HttpEntity<?> getHigherAuths(@RequestParam(name = "authGrade", defaultValue = "0") int authGrade) {
-        final List<Authorization> auths = authService.findByAuthGradeLessThan(authGrade);
-        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.AuthController.getHigherAuths.success", auths), HttpStatus.OK);
+    @GetMapping("/admin/menus/menuGrade")
+    public HttpEntity<?> getHigherMenus(@RequestParam(name = "menuGrade", defaultValue = "0") int menuGrade) {
+        final List<Menu> menus = menuService.findByMenuGradeLessThan(menuGrade);
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.MenuController.getHigherMenus.success", menus), HttpStatus.OK);
     }
 
-    @PutMapping("/admin/auths")
-    public HttpEntity<?> updateAuth(@Valid @RequestBody UpdateAuth updateAuth) {
-        final MethodResponse methodResponse = authService.updateAuth(updateAuth);
+    @PutMapping("/admin/menus")
+    public HttpEntity<?> updateMenu(@Valid @RequestBody UpdateMenu updateMenu) {
+        final MethodResponse methodResponse = menuService.updateMenu(updateMenu);
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }
         return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/admin/auths/{id}")
-    public HttpEntity<?> deleteAuth(@PathVariable(name = "id") int id) {
-        final MethodResponse methodResponse = authService.deleteAuth(id);
+    @DeleteMapping("/admin/menus/{id}")
+    public HttpEntity<?> deleteMenu(@PathVariable(name = "id") int id) {
+        final MethodResponse methodResponse = menuService.deleteMenu(id);
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }
         return new ResponseEntity<>(JsonResponse.success(HttpStatus.NO_CONTENT.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
     }
 
-    @DeleteMapping("/admin/auths")
-    public HttpEntity<?> deleteAuths(@Valid @RequestBody List<Integer> ids) {
-        final MethodResponse methodResponse = authService.deleteAuths(ids);
+    @DeleteMapping("/admin/menus")
+    public HttpEntity<?> deleteMenus(@Valid @RequestBody List<Integer> ids) {
+        final MethodResponse methodResponse = menuService.deleteMenus(ids);
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }
         return new ResponseEntity<>(JsonResponse.success(HttpStatus.NO_CONTENT.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
     }
 
-    @PostMapping("/admin/auths")
-    public HttpEntity<?> createAuth(@Valid @RequestBody CreateAuth createAuth) {
-        final MethodResponse methodResponse = authService.createAuth(createAuth);
+    @PostMapping("/admin/menus")
+    public HttpEntity<?> createMenu(@Valid @RequestBody CreateMenu createMenu) {
+        final MethodResponse methodResponse = menuService.createMenu(createMenu);
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }
         return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.CREATED);
     }
-
 }
