@@ -25,12 +25,12 @@ public class Role {
     @Column(name = "`role_enabled`", columnDefinition = "tinyint(1) NOT NULL comment '角色是否启用'")
     private boolean enabled;
 
-    //    @Transient
+    // @Transient
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @Fetch(FetchMode.SUBSELECT)
     private List<Authorization> auths;
 
-    //    @Transient
+    // @Transient
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @Fetch(FetchMode.SUBSELECT)
     private List<Menu> menus;
