@@ -32,6 +32,7 @@ public class Role {
 
     //    @Transient
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Menu> menus;
 
     public int getId() {
