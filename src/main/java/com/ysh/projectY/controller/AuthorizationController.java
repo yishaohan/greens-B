@@ -35,6 +35,15 @@ public class AuthorizationController {
                                   @RequestParam(name = "requestMethod", defaultValue = "") String requestMethod,
                                   @RequestParam(name = "current", defaultValue = "1") int current,
                                   @RequestParam(name = "pageSize", defaultValue = "5") int pageSize) {
+        if (current <= 0) {
+            current = 1;
+        }
+        if (pageSize <= 0) {
+            pageSize = 1;
+        }
+        if (pageSize > 1000) {
+            pageSize = 1000;
+        }
         Pageable pageable = PageRequest.of(current - 1, pageSize, Sort.by(Sort.Direction.ASC, "id"));
         final Page<Authorization> auths = authService.getAuths(authName, authDescript, requestUrl, requestMethod, pageable);
         return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.AuthController.getAuths.success", auths, auths.toString()), HttpStatus.OK);

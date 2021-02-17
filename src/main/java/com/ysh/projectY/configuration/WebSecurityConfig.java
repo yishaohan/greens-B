@@ -27,8 +27,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${server.port}")
     private int httpsPort;
-    @Value("${http.port}")
-    private int httpPort;
+
+    @Value("${server.ssl.enabled}") //生产环境关闭SSL后, 同时关闭
+    private boolean sslEnabled;
 
     @Value("${projectY.api-base-path}")
     private String apiBasePath;
@@ -74,8 +75,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.portMapper().http(httpPort).mapsTo(httpsPort);
-        httpSecurity.requiresChannel(channel -> channel.anyRequest().requiresSecure());
+
+        // 由负载均衡NGINX提供HTTPS
+        // httpSecurity.portMapper().http(httpPort).mapsTo(httpsPort);
+        // httpSecurity.requiresChannel(channel -> channel.anyRequest().requiresSecure());
 
         httpSecurity.addFilterBefore(new UsernamePasswordLoginFilter(authenticationFailureHandler), UsernamePasswordAuthenticationFilter.class);
 
@@ -109,16 +112,38 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler)
-                .and()
-                .rememberMe()
+                .failureHandler(authenticationFailureHandler);
+//        httpSecurity.rememberMe()
+////                .rememberMeCookieDomain("xclass.highspeed.vip")
+//                .rememberMeCookieName("projectY")
+//                .rememberMeParameter("autoLogin")
+//                .key("projectY")
+//                .tokenRepository(rememberMeTokenRepositoryImpl)
+//                .tokenValiditySeconds(60 * 60 * 24 * 30)
+//                .useSecureCookie(true);
+
+        System.out.println("sslEnabled: " + sslEnabled);
+        if (sslEnabled) {
+            System.out.println("YYY");
+            httpSecurity.rememberMe()
 //                .rememberMeCookieDomain("xclass.highspeed.vip")
-                .rememberMeCookieName("projectY")
-                .rememberMeParameter("autoLogin")
-                .key("projectY")
-                .tokenRepository(rememberMeTokenRepositoryImpl)
-                .tokenValiditySeconds(60 * 60 * 24 * 30)
-                .useSecureCookie(true); //需要依赖前端的访问协议吗?
+                    .rememberMeCookieName("projectY")
+                    .rememberMeParameter("autoLogin")
+                    .key("projectY")
+                    .tokenRepository(rememberMeTokenRepositoryImpl)
+                    .tokenValiditySeconds(60 * 60 * 24 * 30)
+                    .useSecureCookie(true);
+        } else {
+            System.out.println("XXX");
+            httpSecurity.rememberMe()
+//                .rememberMeCookieDomain("xclass.highspeed.vip")
+                    .rememberMeCookieName("projectY")
+                    .rememberMeParameter("autoLogin")
+                    .key("projectY")
+                    .tokenRepository(rememberMeTokenRepositoryImpl)
+                    .tokenValiditySeconds(60 * 60 * 24 * 30)
+                    .useSecureCookie(false);
+        }
 
         //前台还没有实现Logout
         httpSecurity.logout()

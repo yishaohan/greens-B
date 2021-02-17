@@ -3,10 +3,11 @@ package com.ysh.projectY.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity(name = "login_logs")
-public class LoginLogs {
+public class LoginLogs implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`", insertable = false, length = 32, nullable = false)

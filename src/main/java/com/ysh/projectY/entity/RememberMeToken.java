@@ -5,12 +5,13 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 //@DynamicUpdate
 //@DynamicInsert
 @Entity(name = "remember_me_token")
-public class RememberMeToken {
+public class RememberMeToken implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,11 +1,12 @@
 package com.ysh.projectY.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity(name = "sms_captcha")
-public class SmsCaptcha {
+public class SmsCaptcha implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -35,6 +35,15 @@ public class RoleController {
                                   @RequestParam(name = "roleDescript", defaultValue = "") String roleDescript,
                                   @RequestParam(name = "current", defaultValue = "1") int current,
                                   @RequestParam(name = "pageSize", defaultValue = "5") int pageSize) {
+        if (current <= 0) {
+            current = 1;
+        }
+        if (pageSize <= 0) {
+            pageSize = 1;
+        }
+        if (pageSize > 1000) {
+            pageSize = 1000;
+        }
         Pageable pageable = PageRequest.of(current - 1, pageSize, Sort.by(Sort.Direction.ASC, "id"));
         final Page<Role> roles = roleService.getRoles(roleName, roleDescript, pageable);
         return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.RoleController.getRoles.success", roles, roles.toString()), HttpStatus.OK);

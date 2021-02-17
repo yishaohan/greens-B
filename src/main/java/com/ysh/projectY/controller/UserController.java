@@ -93,6 +93,15 @@ public class UserController {
                                   @RequestParam(name = "mobilePhone", defaultValue = "") String mobilePhone,
                                   @RequestParam(name = "current", defaultValue = "1") int current,
                                   @RequestParam(name = "pageSize", defaultValue = "5") int pageSize) {
+        if (current <= 0) {
+            current = 1;
+        }
+        if (pageSize <= 0) {
+            pageSize = 1;
+        }
+        if (pageSize > 1000) {
+            pageSize = 1000;
+        }
         Pageable pageable = PageRequest.of(current - 1, pageSize, Sort.by(Sort.Direction.ASC, "id"));
         final Page<User> users = userDetailService.getUsers(nickname, username, mobilePhone, pageable);
 //        final List<User> content = users.getContent();
