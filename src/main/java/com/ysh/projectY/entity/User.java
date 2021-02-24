@@ -54,7 +54,7 @@ public class User implements UserDetails, Serializable {
     private boolean locked;
 
     //    @Transient
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
     @Override

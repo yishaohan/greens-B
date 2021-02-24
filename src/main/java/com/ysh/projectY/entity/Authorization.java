@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Authorization implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "`id`", insertable = false, length = 32, nullable = false)
+    @Column(name = "`id`", length = 32, nullable = false)
     private int id;
 
     @Column(name = "`parent_id`", columnDefinition = "int NOT NULL comment '父权限ID'")

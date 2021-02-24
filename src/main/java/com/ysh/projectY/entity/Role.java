@@ -26,13 +26,13 @@ public class Role implements Serializable {
     @Column(name = "`role_enabled`", columnDefinition = "tinyint(1) NOT NULL comment '角色是否启用'")
     private boolean enabled;
 
-    // @Transient
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    // 应该使用@OneToMany ????
+    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     private List<Authorization> auths;
 
-    // @Transient
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    // 应该使用@OneToMany ????
+    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     private List<Menu> menus;
 
