@@ -14,8 +14,11 @@ public class SchoolDistrict {
     @Column(name = "`district_number`", columnDefinition = "varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '教育局编号'")
     private String districtNumber;
 
-    @Column(name = "`district_name`", columnDefinition = "varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '教育局名称'")
+    @Column(name = "`district_name`", columnDefinition = "varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '教育局名称'")
     private String districtName;
+
+    @Column(name = "`district_abb`", columnDefinition = "varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '教育局简称'")
+    private String districtAbb;
 
     @Column(name = "`district_phone`", columnDefinition = "varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '教育局电话'")
     private String districtPhone;
@@ -78,6 +81,14 @@ public class SchoolDistrict {
 
     public void setDistrictName(String districtName) {
         this.districtName = districtName;
+    }
+
+    public String getDistrictAbb() {
+        return districtAbb;
+    }
+
+    public void setDistrictAbb(String districtAbb) {
+        this.districtAbb = districtAbb;
     }
 
     public String getDistrictPhone() {
@@ -182,6 +193,7 @@ public class SchoolDistrict {
                 "id = " + id +
                 ", \ndistrictNumber = '" + districtNumber + '\'' +
                 ", \ndistrictName = '" + districtName + '\'' +
+                ", \ndistrictAbb = '" + districtAbb + '\'' +
                 ", \ndistrictPhone = '" + districtPhone + '\'' +
                 ", \ndistrictFax = '" + districtFax + '\'' +
                 ", \ndistrictWebAddress = '" + districtWebAddress + '\'' +

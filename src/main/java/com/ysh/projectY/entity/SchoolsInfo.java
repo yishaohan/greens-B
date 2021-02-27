@@ -24,8 +24,8 @@ public class SchoolsInfo {
     private boolean enabled;
 
     // 双向关联
-    @OneToMany(mappedBy = "schoolsInfo", fetch = FetchType.LAZY)
-    Set<BCSchoolsCOVID19> bcSchoolsCOVID19;
+//    @OneToMany(mappedBy = "schoolsInfo", fetch = FetchType.LAZY)
+//    Set<BCSchoolsCOVID19> bcSchoolsCOVID19;
 
     // 双向关联
     @ManyToOne(fetch = FetchType.LAZY)
@@ -196,13 +196,13 @@ public class SchoolsInfo {
         this.enabled = enabled;
     }
 
-    public Set<BCSchoolsCOVID19> getBcSchoolsCOVID19() {
-        return bcSchoolsCOVID19;
-    }
-
-    public void setBcSchoolsCOVID19(Set<BCSchoolsCOVID19> bcSchoolsCOVID19) {
-        this.bcSchoolsCOVID19 = bcSchoolsCOVID19;
-    }
+//    public Set<BCSchoolsCOVID19> getBcSchoolsCOVID19() {
+//        return bcSchoolsCOVID19;
+//    }
+//
+//    public void setBcSchoolsCOVID19(Set<BCSchoolsCOVID19> bcSchoolsCOVID19) {
+//        this.bcSchoolsCOVID19 = bcSchoolsCOVID19;
+//    }
 
     public SchoolDistrict getSchoolDistrict() {
         return schoolDistrict;
@@ -571,7 +571,7 @@ public class SchoolsInfo {
                 ", \nschoolCode = '" + schoolCode + '\'' +
                 ", \nschoolName = '" + schoolName + '\'' +
                 ", \nenabled = " + enabled +
-                ", \nbcSchoolsCOVID19 = " + bcSchoolsCOVID19.getClass().getName() +
+//                ", \nbcSchoolsCOVID19 = " + bcSchoolsCOVID19.getClass().getName() +
                 ", \nschoolDistrict = " + schoolDistrict +
                 ", \nnoDistrictNumber = '" + noDistrictNumber + '\'' +
                 ", \nschoolAddress = '" + schoolAddress + '\'' +

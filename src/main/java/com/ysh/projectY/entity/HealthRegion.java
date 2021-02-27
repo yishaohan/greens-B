@@ -20,8 +20,8 @@ public class HealthRegion {
     private String provinceName;
 
     // 双向关联
-    @OneToMany(mappedBy = "healthRegion", fetch = FetchType.LAZY)
-    Set<BCSchoolsCOVID19> bcSchoolsCOVID19;
+//    @OneToMany(mappedBy = "healthRegion", fetch = FetchType.LAZY)
+//    Set<BCSchoolsCOVID19> bcSchoolsCOVID19;
 
     public int getId() {
         return id;
@@ -55,13 +55,13 @@ public class HealthRegion {
         this.provinceName = provinceName;
     }
 
-    public Set<BCSchoolsCOVID19> getBcSchoolsCOVID19() {
-        return bcSchoolsCOVID19;
-    }
-
-    public void setBcSchoolsCOVID19(Set<BCSchoolsCOVID19> bcSchoolsCOVID19) {
-        this.bcSchoolsCOVID19 = bcSchoolsCOVID19;
-    }
+//    public Set<BCSchoolsCOVID19> getBcSchoolsCOVID19() {
+//        return bcSchoolsCOVID19;
+//    }
+//
+//    public void setBcSchoolsCOVID19(Set<BCSchoolsCOVID19> bcSchoolsCOVID19) {
+//        this.bcSchoolsCOVID19 = bcSchoolsCOVID19;
+//    }
 
     @Override
     public String toString() {
@@ -70,7 +70,7 @@ public class HealthRegion {
                 ", \nhealthRegionName = '" + healthRegionName + '\'' +
                 ", \nprovinceId = '" + provinceId + '\'' +
                 ", \nprovinceName = '" + provinceName + '\'' +
-                ", \nbcSchoolsCOVID19 = " + bcSchoolsCOVID19.getClass().getName() +
+//                ", \nbcSchoolsCOVID19 = " + bcSchoolsCOVID19.getClass().getName() +
                 "\n}";
     }
 }

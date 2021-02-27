@@ -68,7 +68,7 @@ class ProjectYTests {
         final List<SchoolsInfo> schoolsInfoList = schoolsInfoService.findAll();
         for (SchoolsInfo schoolsInfo : schoolsInfoList) {
 //            System.out.print("学校: " + schoolsInfo.getSchoolName() + " --> ");
-            System.out.println(schoolsInfo.getBcSchoolsCOVID19().size());
+//            System.out.println(schoolsInfo.getBcSchoolsCOVID19().size());
         }
     }
 

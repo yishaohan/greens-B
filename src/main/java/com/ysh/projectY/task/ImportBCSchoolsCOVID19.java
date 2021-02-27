@@ -115,9 +115,9 @@ public class ImportBCSchoolsCOVID19 {
             tempRecord.setStatus("Imported");
             BCSchoolsCOVID19 bcSchoolsCOVID19 = new BCSchoolsCOVID19();
             bcSchoolsCOVID19.setId(tempRecord.getId());
-            bcSchoolsCOVID19.setSchoolsInfo(schoolsInfo);
-            bcSchoolsCOVID19.setHealthRegion(healthRegion);
-            bcSchoolsCOVID19.setNotificationDate(notificationDate);
+//            bcSchoolsCOVID19.setSchoolsInfo(schoolsInfo);
+//            bcSchoolsCOVID19.setHealthRegion(healthRegion);
+//            bcSchoolsCOVID19.setNotificationDate(notificationDate);
             bcSchoolsCOVID19.setNotificationMethod(notificationMethod);
             bcSchoolsCOVID19.setExposureDate(exposureDate);
             bcSchoolsCOVID19.setExposureNumber(exposureNumber);
