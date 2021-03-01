@@ -5,6 +5,9 @@ import com.ysh.projectY.entity.BCSchoolsCOVID19;
 import com.ysh.projectY.entity.HealthRegion;
 import com.ysh.projectY.entity.Menu;
 import com.ysh.projectY.entity.SchoolsInfo;
+import com.ysh.projectY.form.BCDistrictsCOVID19Summary;
+import com.ysh.projectY.form.BCHealthsCOVID19Summary;
+import com.ysh.projectY.form.BCSchoolsCOVID19Summary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -45,5 +48,17 @@ public class BCSchoolsCOVID19Service {
     public Page<BCSchoolsCOVID19> getBCSchoolsCOVID19(String schoolName, String notificationDate, String districtAbb, String notificationMethod, String healthRegionName, String cityName, Pageable pageable) {
         final Page<BCSchoolsCOVID19> page = bcSchoolsCOVID19Dao.findAllBySchoolNameContainingAndNotificationDateContainingAndDistrictAbbContainingAndNotificationMethodContainingAndHealthRegionNameContainingAndCityNameContaining(schoolName, notificationDate, districtAbb, notificationMethod, healthRegionName, cityName, pageable);
         return page;
+    }
+
+    public Set<BCDistrictsCOVID19Summary> getBCDistrictsCOVID19Summary(String startDate, String endDate) {
+        return bcSchoolsCOVID19Dao.countByDistrictAbb(startDate, endDate);
+    }
+
+    public Set<BCSchoolsCOVID19Summary> getBCSchoolsCOVID19Summary(String startDate, String endDate) {
+        return bcSchoolsCOVID19Dao.countBySchoolName(startDate, endDate);
+    }
+
+    public Set<BCHealthsCOVID19Summary> getBCHealthsCOVID19Summary(String startDate, String endDate) {
+        return bcSchoolsCOVID19Dao.countByHealthName(startDate, endDate);
     }
 }
