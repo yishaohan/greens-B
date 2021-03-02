@@ -2,14 +2,15 @@ package com.ysh.projectY;
 
 import com.ysh.projectY.entity.*;
 import com.ysh.projectY.service.*;
+import com.ysh.projectY.utils.dateTools;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @SpringBootTest
 class ProjectYTests {
@@ -118,7 +119,7 @@ class ProjectYTests {
 //        System.out.println("3. ============================================================================");
     }
 
-    @Test
+    //    @Test
     @Transactional(readOnly = true)
     void testCitiesInfo() {
 //        int id = 117;
@@ -199,4 +200,17 @@ class ProjectYTests {
         final SchoolsInfo schoolsInfo = optional.get();
         System.out.println(schoolsInfo);
     }
+
+    @Test
+    void testDate() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = sdf.parse("2021-03-03");
+        Date temp = dateTools.getThisWeekMonday(date);
+        System.out.println(sdf.format(temp));
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(temp);
+        cal.add(Calendar.DATE, 6);
+        System.out.println(sdf.format(cal.getTime()));
+    }
+
 }

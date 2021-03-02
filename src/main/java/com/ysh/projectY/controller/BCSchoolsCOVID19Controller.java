@@ -1,9 +1,10 @@
 package com.ysh.projectY.controller;
 
 import com.ysh.projectY.entity.BCSchoolsCOVID19;
-import com.ysh.projectY.form.BCDistrictsCOVID19Summary;
+import com.ysh.projectY.form.BCSchoolsDistrictsCOVID19Summary;
 import com.ysh.projectY.form.BCSchoolsCOVID19Summary;
-import com.ysh.projectY.form.BCHealthsCOVID19Summary;
+import com.ysh.projectY.form.BCSchoolsHealthsCOVID19Summary;
+import com.ysh.projectY.form.BCSchoolsCOVID19TotalSummary;
 import com.ysh.projectY.service.BCSchoolsCOVID19Service;
 import com.ysh.projectY.utils.JsonResponse;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -62,11 +64,11 @@ public class BCSchoolsCOVID19Controller {
 
 
     // 匿名用户可以访问
-    @GetMapping("/public/bcDistrictsCOVID19Summary")
-    public HttpEntity<?> getBCDistrictsCOVID19Summary(@RequestParam(name = "startDate", defaultValue = "2021-01-01") String startDate,
-                                                      @RequestParam(name = "endDate", defaultValue = "2021-12-31") String endDate) {
-        final Set<BCDistrictsCOVID19Summary> bcDistrictsCOVID19 = bcSchoolsCOVID19Service.getBCDistrictsCOVID19Summary(startDate, endDate);
-        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCDistrictsCOVID19.success", bcDistrictsCOVID19, "bcDistrictsCOVID19.toString()"), HttpStatus.OK);
+    @GetMapping("/public/bcSchoolsDistrictsCOVID19Summary")
+    public HttpEntity<?> getBCSchoolsDistrictsCOVID19Summary(@RequestParam(name = "startDate", defaultValue = "2021-01-01") String startDate,
+                                                             @RequestParam(name = "endDate", defaultValue = "2021-12-31") String endDate) {
+        final Set<BCSchoolsDistrictsCOVID19Summary> bcSchoolsDistrictsCOVID19 = bcSchoolsCOVID19Service.getBCSchoolsDistrictsCOVID19Summary(startDate, endDate);
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCSchoolsDistrictsCOVID19.success", bcSchoolsDistrictsCOVID19, "!!!"), HttpStatus.OK);
     }
 
     // 匿名用户可以访问
@@ -74,14 +76,21 @@ public class BCSchoolsCOVID19Controller {
     public HttpEntity<?> getBCSchoolsCOVID19Summary(@RequestParam(name = "startDate", defaultValue = "2021-01-01") String startDate,
                                                     @RequestParam(name = "endDate", defaultValue = "2021-12-31") String endDate) {
         final Set<BCSchoolsCOVID19Summary> bcSchoolsCOVID19 = bcSchoolsCOVID19Service.getBCSchoolsCOVID19Summary(startDate, endDate);
-        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCDistrictsCOVID19.success", bcSchoolsCOVID19, "bcDistrictsCOVID19.toString()"), HttpStatus.OK);
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCSchoolsCOVID19Summary.success", bcSchoolsCOVID19, "!!!"), HttpStatus.OK);
     }
 
     // 匿名用户可以访问
-    @GetMapping("/public/bcHealthsCOVID19Summary")
-    public HttpEntity<?> getBCHealthsCOVID19Summary(@RequestParam(name = "startDate", defaultValue = "2021-01-01") String startDate,
-                                                    @RequestParam(name = "endDate", defaultValue = "2021-12-31") String endDate) {
-        final Set<BCHealthsCOVID19Summary> bcHealthsCOVID19 = bcSchoolsCOVID19Service.getBCHealthsCOVID19Summary(startDate, endDate);
-        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCDistrictsCOVID19.success", bcHealthsCOVID19, "bcDistrictsCOVID19.toString()"), HttpStatus.OK);
+    @GetMapping("/public/bcSchoolsHealthsCOVID19Summary")
+    public HttpEntity<?> getBCSchoolsHealthsCOVID19Summary(@RequestParam(name = "startDate", defaultValue = "2021-01-01") String startDate,
+                                                           @RequestParam(name = "endDate", defaultValue = "2021-12-31") String endDate) {
+        final Set<BCSchoolsHealthsCOVID19Summary> bcSchoolsHealthsCOVID19 = bcSchoolsCOVID19Service.getBCSchoolsHealthsCOVID19Summary(startDate, endDate);
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCSchoolsHealthsCOVID19Summary.success", bcSchoolsHealthsCOVID19, "!!!"), HttpStatus.OK);
+    }
+
+    // 匿名用户可以访问
+    @GetMapping("/public/bcSchoolsCOVID19TotalSummary")
+    public HttpEntity<?> getBCCOVID19TotalSummary() {
+        final Optional<BCSchoolsCOVID19TotalSummary> bcSchoolsCOVID19TotalSummary = bcSchoolsCOVID19Service.getBCSchoolsCOVID19TotalSummary();
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCCOVID19TotalSummary.success", bcSchoolsCOVID19TotalSummary.get(), "!!!"), HttpStatus.OK);
     }
 }

@@ -1,6 +1,6 @@
 package com.ysh.projectY.form;
 
-public interface BCDistrictsCOVID19Summary {
+public interface BCSchoolsDistrictsCOVID19Summary {
 
     String getDistrictAbb();
 

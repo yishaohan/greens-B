@@ -1,6 +1,6 @@
 package com.ysh.projectY.form;
 
-public interface BCHealthsCOVID19Summary {
+public interface BCSchoolsHealthsCOVID19Summary {
 
     String getHealthName();
 
