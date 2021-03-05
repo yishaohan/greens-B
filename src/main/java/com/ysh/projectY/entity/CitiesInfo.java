@@ -48,12 +48,12 @@ public class CitiesInfo implements Serializable {
     private int cityId;
 
     // 双向关联
-    @OneToMany(mappedBy = "citiesInfo", fetch = FetchType.LAZY)
-    Set<SchoolsInfo> schoolsInfo;
+//    @OneToMany(mappedBy = "citiesInfo", fetch = FetchType.LAZY)
+//    Set<SchoolsInfo> schoolsInfo;
 
     // 双向关联
-    @OneToMany(mappedBy = "citiesInfo", fetch = FetchType.LAZY)
-    Set<SchoolDistrict> schoolDistricts;
+//    @OneToMany(mappedBy = "citiesInfo", fetch = FetchType.LAZY)
+//    Set<SchoolDistrict> schoolDistricts;
 
     public int getId() {
         return id;
@@ -159,40 +159,40 @@ public class CitiesInfo implements Serializable {
         this.cityId = cityId;
     }
 
-    public Set<SchoolsInfo> getSchoolsInfo() {
-        return schoolsInfo;
-    }
+//    public Set<SchoolsInfo> getSchoolsInfo() {
+//        return schoolsInfo;
+//    }
+//
+//    public void setSchoolsInfo(Set<SchoolsInfo> schoolsInfo) {
+//        this.schoolsInfo = schoolsInfo;
+//    }
+//
+//    public Set<SchoolDistrict> getSchoolDistricts() {
+//        return schoolDistricts;
+//    }
+//
+//    public void setSchoolDistricts(Set<SchoolDistrict> schoolDistricts) {
+//        this.schoolDistricts = schoolDistricts;
+//    }
 
-    public void setSchoolsInfo(Set<SchoolsInfo> schoolsInfo) {
-        this.schoolsInfo = schoolsInfo;
-    }
-
-    public Set<SchoolDistrict> getSchoolDistricts() {
-        return schoolDistricts;
-    }
-
-    public void setSchoolDistricts(Set<SchoolDistrict> schoolDistricts) {
-        this.schoolDistricts = schoolDistricts;
-    }
-
-    @Override
-    public String toString() {
-        return "CitiesInfo{\n" +
-                "id = " + id +
-                ", \ncityName = '" + cityName + '\'' +
-                ", \ncityAscii = '" + cityAscii + '\'' +
-                ", \nprovinceAbb = '" + provinceAbb + '\'' +
-                ", \nprovinceName = '" + provinceName + '\'' +
-                ", \nlongitude = " + longitude +
-                ", \nlatitude = " + latitude +
-                ", \npopulation = " + population +
-                ", \ndensity = " + density +
-                ", \ntimezone = '" + timezone + '\'' +
-                ", \nranking = " + ranking +
-                ", \npostal = '" + postal + '\'' +
-                ", \ncityId = " + cityId +
-                ", \nschoolsInfo = " + schoolsInfo.getClass().getName() +
-                ", \nschoolDistricts = " + schoolDistricts.getClass().getName() +
-                "\n}";
-    }
+//    @Override
+//    public String toString() {
+//        return "CitiesInfo{\n" +
+//                "id = " + id +
+//                ", \ncityName = '" + cityName + '\'' +
+//                ", \ncityAscii = '" + cityAscii + '\'' +
+//                ", \nprovinceAbb = '" + provinceAbb + '\'' +
+//                ", \nprovinceName = '" + provinceName + '\'' +
+//                ", \nlongitude = " + longitude +
+//                ", \nlatitude = " + latitude +
+//                ", \npopulation = " + population +
+//                ", \ndensity = " + density +
+//                ", \ntimezone = '" + timezone + '\'' +
+//                ", \nranking = " + ranking +
+//                ", \npostal = '" + postal + '\'' +
+//                ", \ncityId = " + cityId +
+//                ", \nschoolsInfo = " + schoolsInfo.getClass().getName() +
+//                ", \nschoolDistricts = " + schoolDistricts.getClass().getName() +
+//                "\n}";
+//    }
 }

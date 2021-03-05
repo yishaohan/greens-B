@@ -1,9 +1,10 @@
 package com.ysh.projectY.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "school_district_contacts")
-public class SchoolDistrictContacts {
+public class SchoolDistrictContacts implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,7 +12,7 @@ public class SchoolDistrictContacts {
     private int id;
 
     // 双向关联
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     SchoolDistrict schoolDistrict;
 
     @Column(name = "`contact_type`", columnDefinition = "varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '联系人类型'")
@@ -195,26 +196,26 @@ public class SchoolDistrictContacts {
         this.noCourierPostalCode = noCourierPostalCode;
     }
 
-    @Override
-    public String toString() {
-        return "SchoolDistrictContacts{\n" +
-                "id = " + id +
-                ", \nschoolDistrict = " + schoolDistrict +
-                ", \ncontactType = '" + contactType + '\'' +
-                ", \ncontactTitle = '" + contactTitle + '\'' +
-                ", \ncontactFirstName = '" + contactFirstName + '\'' +
-                ", \ncontactLastName = '" + contactLastName + '\'' +
-                ", \npositionTitle = '" + positionTitle + '\'' +
-                ", \ncontactPhone = '" + contactPhone + '\'' +
-                ", \ncontactPhoneExtension = '" + contactPhoneExtension + '\'' +
-                ", \ncontactFax = '" + contactFax + '\'' +
-                ", \ncontactEmail = '" + contactEmail + '\'' +
-                ", \nnoMailingAddress = '" + noMailingAddress + '\'' +
-                ", \nnoMailingCity = '" + noMailingCity + '\'' +
-                ", \nnoMailingProvince = '" + noMailingProvince + '\'' +
-                ", \nnoMailingPostalCode = '" + noMailingPostalCode + '\'' +
-                ", \nnoCourierAddress = '" + noCourierAddress + '\'' +
-                ", \nnoCourierPostalCode = '" + noCourierPostalCode + '\'' +
-                "\n}";
-    }
+//    @Override
+//    public String toString() {
+//        return "SchoolDistrictContacts{\n" +
+//                "id = " + id +
+//                ", \nschoolDistrict = " + schoolDistrict +
+//                ", \ncontactType = '" + contactType + '\'' +
+//                ", \ncontactTitle = '" + contactTitle + '\'' +
+//                ", \ncontactFirstName = '" + contactFirstName + '\'' +
+//                ", \ncontactLastName = '" + contactLastName + '\'' +
+//                ", \npositionTitle = '" + positionTitle + '\'' +
+//                ", \ncontactPhone = '" + contactPhone + '\'' +
+//                ", \ncontactPhoneExtension = '" + contactPhoneExtension + '\'' +
+//                ", \ncontactFax = '" + contactFax + '\'' +
+//                ", \ncontactEmail = '" + contactEmail + '\'' +
+//                ", \nnoMailingAddress = '" + noMailingAddress + '\'' +
+//                ", \nnoMailingCity = '" + noMailingCity + '\'' +
+//                ", \nnoMailingProvince = '" + noMailingProvince + '\'' +
+//                ", \nnoMailingPostalCode = '" + noMailingPostalCode + '\'' +
+//                ", \nnoCourierAddress = '" + noCourierAddress + '\'' +
+//                ", \nnoCourierPostalCode = '" + noCourierPostalCode + '\'' +
+//                "\n}";
+//    }
 }

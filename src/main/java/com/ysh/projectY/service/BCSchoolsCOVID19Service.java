@@ -2,10 +2,7 @@ package com.ysh.projectY.service;
 
 import com.ysh.projectY.dao.BCSchoolsCOVID19Dao;
 import com.ysh.projectY.entity.BCSchoolsCOVID19;
-import com.ysh.projectY.form.BCSchoolsCOVID19TotalSummary;
-import com.ysh.projectY.form.BCSchoolsDistrictsCOVID19Summary;
-import com.ysh.projectY.form.BCSchoolsHealthsCOVID19Summary;
-import com.ysh.projectY.form.BCSchoolsCOVID19Summary;
+import com.ysh.projectY.form.*;
 import com.ysh.projectY.utils.dateTools;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -101,5 +98,23 @@ public class BCSchoolsCOVID19Service {
         final float yesterday = bcSchoolsCOVID19Dao.countByNotificationDate(endDate, endDate);
         bcSchoolsCOVID19TotalSummary.setDailyChanges(String.valueOf(Math.round(((today - yesterday) / yesterday) * 100)).replace(".0", ""));
         return Optional.of(bcSchoolsCOVID19TotalSummary);
+    }
+
+    public Set<BCSchoolsCOVID19DailySummary> getBCSchoolsCOVID19DailySummary(String startDate, String endDate) {
+        Set<BCSchoolsCOVID19DailySummary> bcSchoolsCOVID19DailySummaries = bcSchoolsCOVID19Dao.countByNotificationDateGroupByNotificationDate(startDate, endDate);
+        bcSchoolsCOVID19DailySummaries.addAll(bcSchoolsCOVID19Dao.countByHealthRegionNameNotificationDateGroupByNotificationDate(startDate, endDate));
+        return bcSchoolsCOVID19DailySummaries;
+    }
+
+    public Set<BCSchoolsHealthsCitiesCOVID19Summary> getBCSchoolsHealthsCitiesCOVID19Summary(String startDate, String endDate) {
+        return bcSchoolsCOVID19Dao.countByHealthsCities(startDate, endDate);
+    }
+
+    public Set<BCSchoolsCOVID19MonthlySummary> getBCSchoolsCOVID19MonthlySummary(String startDate, String endDate) {
+        return bcSchoolsCOVID19Dao.countByNotificationDateMonthly(startDate, endDate);
+    }
+
+    public Set<BCSchoolCOVID19DailySummary> getBCSchoolCOVID19DailySummary(String startDate, String endDate, int schoolId) {
+        return bcSchoolsCOVID19Dao.countByNotificationDateGroupBySchoolId(startDate, endDate, schoolId);
     }
 }

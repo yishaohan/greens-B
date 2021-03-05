@@ -1,10 +1,11 @@
 package com.ysh.projectY.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity(name = "health_region")
-public class HealthRegion {
+public class HealthRegion implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`id`", insertable = false, length = 32, nullable = false)

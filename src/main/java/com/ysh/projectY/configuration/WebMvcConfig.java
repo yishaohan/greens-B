@@ -20,6 +20,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         final String property = System.getProperty("catalina.home");
         String realPath = property + File.separator + "work" + File.separator + "resource" + File.separator + "avatars" + File.separator;
         registry.addResourceHandler(apiBasePath + "/user/avatars/**").addResourceLocations("file:" + realPath);
+        realPath = property + File.separator + "work" + File.separator + "resource" + File.separator + "covid19" + File.separator;
+        registry.addResourceHandler("/public/covid19/**").addResourceLocations("file:" + realPath);
     }
 
 //    @Value("${projectY.api-base-path}")

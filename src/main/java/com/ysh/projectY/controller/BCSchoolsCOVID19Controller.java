@@ -1,10 +1,7 @@
 package com.ysh.projectY.controller;
 
 import com.ysh.projectY.entity.BCSchoolsCOVID19;
-import com.ysh.projectY.form.BCSchoolsDistrictsCOVID19Summary;
-import com.ysh.projectY.form.BCSchoolsCOVID19Summary;
-import com.ysh.projectY.form.BCSchoolsHealthsCOVID19Summary;
-import com.ysh.projectY.form.BCSchoolsCOVID19TotalSummary;
+import com.ysh.projectY.form.*;
 import com.ysh.projectY.service.BCSchoolsCOVID19Service;
 import com.ysh.projectY.utils.JsonResponse;
 import org.springframework.data.domain.Page;
@@ -89,8 +86,42 @@ public class BCSchoolsCOVID19Controller {
 
     // 匿名用户可以访问
     @GetMapping("/public/bcSchoolsCOVID19TotalSummary")
-    public HttpEntity<?> getBCCOVID19TotalSummary() {
+    public HttpEntity<?> getBCSchoolsCOVID19TotalSummary() {
         final Optional<BCSchoolsCOVID19TotalSummary> bcSchoolsCOVID19TotalSummary = bcSchoolsCOVID19Service.getBCSchoolsCOVID19TotalSummary();
         return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCCOVID19TotalSummary.success", bcSchoolsCOVID19TotalSummary.get(), "!!!"), HttpStatus.OK);
     }
+
+    // 匿名用户可以访问
+    @GetMapping("/public/bcSchoolsCOVID19DailySummary")
+    public HttpEntity<?> getBCSchoolsCOVID19DailySummary(@RequestParam(name = "startDate", defaultValue = "2021-01-01") String startDate,
+                                                         @RequestParam(name = "endDate", defaultValue = "2021-12-31") String endDate) {
+        final Set<BCSchoolsCOVID19DailySummary> bcSchoolsCOVID19DailySummary = bcSchoolsCOVID19Service.getBCSchoolsCOVID19DailySummary(startDate, endDate);
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCSchoolsCOVID19DailySummary.success", bcSchoolsCOVID19DailySummary, "!!!"), HttpStatus.OK);
+    }
+
+    // 匿名用户可以访问
+    @GetMapping("/public/bcSchoolsHealthsCitiesCOVID19Summary")
+    public HttpEntity<?> getBCSchoolsHealthsCitiesCOVID19Summary(@RequestParam(name = "startDate", defaultValue = "2021-01-01") String startDate,
+                                                                 @RequestParam(name = "endDate", defaultValue = "2021-12-31") String endDate) {
+        final Set<BCSchoolsHealthsCitiesCOVID19Summary> bcSchoolsHealthsCitiesCOVID19 = bcSchoolsCOVID19Service.getBCSchoolsHealthsCitiesCOVID19Summary(startDate, endDate);
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCSchoolsHealthsCitiesCOVID19Summary.success", bcSchoolsHealthsCitiesCOVID19, "!!!"), HttpStatus.OK);
+    }
+
+    // 匿名用户可以访问
+    @GetMapping("/public/bcSchoolsCOVID19MonthlySummary")
+    public HttpEntity<?> getBCSchoolsCOVID19MonthlySummary(@RequestParam(name = "startDate", defaultValue = "2020-01-01") String startDate,
+                                                           @RequestParam(name = "endDate", defaultValue = "2021-12-31") String endDate) {
+        final Set<BCSchoolsCOVID19MonthlySummary> bcSchoolsCOVID19MonthlySummary = bcSchoolsCOVID19Service.getBCSchoolsCOVID19MonthlySummary(startDate, endDate);
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCCOVID19MonthlySummary.success", bcSchoolsCOVID19MonthlySummary, "!!!"), HttpStatus.OK);
+    }
+
+    // 匿名用户可以访问, 统计数量太少,没有用
+    @GetMapping("/public/bcSchoolCOVID19DailySummary")
+    public HttpEntity<?> getBCSchoolCOVID19DailySummary(@RequestParam(name = "startDate", defaultValue = "2020-01-01") String startDate,
+                                                        @RequestParam(name = "endDate", defaultValue = "2021-12-31") String endDate,
+                                                        @RequestParam(name = "schoolId") int schoolId) {
+        final Set<BCSchoolCOVID19DailySummary> bcSchoolCOVID19DailySummary = bcSchoolsCOVID19Service.getBCSchoolCOVID19DailySummary(startDate, endDate, schoolId);
+        return new ResponseEntity<>(JsonResponse.success(HttpStatus.OK.value(), "projectY.BCSchoolsCOVID19Controller.getBCSchoolCOVID19DailySummary.success", bcSchoolCOVID19DailySummary, "!!!"), HttpStatus.OK);
+    }
+
 }

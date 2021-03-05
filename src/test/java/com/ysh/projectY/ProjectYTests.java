@@ -139,13 +139,13 @@ class ProjectYTests {
 //            }
 //        }
         final List<CitiesInfo> citiesInfoList = citiesInfoService.findAll();
-        for (CitiesInfo citiesInfo : citiesInfoList) {
-            System.out.println("***" + citiesInfo.getCityName() + "***");
-            final Set<SchoolDistrict> schoolDistricts = citiesInfo.getSchoolDistricts();
-            for (SchoolDistrict schoolDistrict : schoolDistricts) {
-                System.out.println("\t" + schoolDistrict.getDistrictName());
-            }
-        }
+//        for (CitiesInfo citiesInfo : citiesInfoList) {
+//            System.out.println("***" + citiesInfo.getCityName() + "***");
+//            final Set<SchoolDistrict> schoolDistricts = citiesInfo.getSchoolDistricts();
+//            for (SchoolDistrict schoolDistrict : schoolDistricts) {
+//                System.out.println("\t" + schoolDistrict.getDistrictName());
+//            }
+//        }
 
     }
 

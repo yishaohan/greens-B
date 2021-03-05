@@ -1,10 +1,11 @@
 package com.ysh.projectY.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity(name = "school_district")
-public class SchoolDistrict {
+public class SchoolDistrict implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +31,8 @@ public class SchoolDistrict {
     private String districtWebAddress;
 
     // 双向关联
-    @ManyToOne(fetch = FetchType.LAZY)
-    CitiesInfo citiesInfo;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    CitiesInfo citiesInfo;
 
     @Column(name = "`no_city`", columnDefinition = "varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '城市'")
     private String noCity;
@@ -52,12 +53,12 @@ public class SchoolDistrict {
     private String courierAddress;
 
     // 双向关联
-    @OneToMany(mappedBy = "schoolDistrict", fetch = FetchType.LAZY)
-    Set<SchoolDistrictContacts> contacts;
+//    @OneToMany(mappedBy = "schoolDistrict", fetch = FetchType.LAZY)
+//    Set<SchoolDistrictContacts> contacts;
 
     // 双向关联
-    @OneToMany(mappedBy = "schoolDistrict", fetch = FetchType.LAZY)
-    Set<SchoolsInfo> schoolsInfo;
+//    @OneToMany(mappedBy = "schoolDistrict", fetch = FetchType.LAZY)
+//    Set<SchoolsInfo> schoolsInfo;
 
     public int getId() {
         return id;
@@ -115,13 +116,13 @@ public class SchoolDistrict {
         this.districtWebAddress = districtWebAddress;
     }
 
-    public CitiesInfo getCitiesInfo() {
-        return citiesInfo;
-    }
-
-    public void setCitiesInfo(CitiesInfo citiesInfo) {
-        this.citiesInfo = citiesInfo;
-    }
+//    public CitiesInfo getCitiesInfo() {
+//        return citiesInfo;
+//    }
+//
+//    public void setCitiesInfo(CitiesInfo citiesInfo) {
+//        this.citiesInfo = citiesInfo;
+//    }
 
     public String getNoCity() {
         return noCity;
@@ -171,41 +172,41 @@ public class SchoolDistrict {
         this.courierAddress = courierAddress;
     }
 
-    public Set<SchoolDistrictContacts> getContacts() {
-        return contacts;
-    }
+//    public Set<SchoolDistrictContacts> getContacts() {
+//        return contacts;
+//    }
+//
+//    public void setContacts(Set<SchoolDistrictContacts> contacts) {
+//        this.contacts = contacts;
+//    }
+//
+//    public Set<SchoolsInfo> getSchoolsInfo() {
+//        return schoolsInfo;
+//    }
+//
+//    public void setSchoolsInfo(Set<SchoolsInfo> schoolsInfo) {
+//        this.schoolsInfo = schoolsInfo;
+//    }
 
-    public void setContacts(Set<SchoolDistrictContacts> contacts) {
-        this.contacts = contacts;
-    }
-
-    public Set<SchoolsInfo> getSchoolsInfo() {
-        return schoolsInfo;
-    }
-
-    public void setSchoolsInfo(Set<SchoolsInfo> schoolsInfo) {
-        this.schoolsInfo = schoolsInfo;
-    }
-
-    @Override
-    public String toString() {
-        return "SchoolDistrict{\n" +
-                "id = " + id +
-                ", \ndistrictNumber = '" + districtNumber + '\'' +
-                ", \ndistrictName = '" + districtName + '\'' +
-                ", \ndistrictAbb = '" + districtAbb + '\'' +
-                ", \ndistrictPhone = '" + districtPhone + '\'' +
-                ", \ndistrictFax = '" + districtFax + '\'' +
-                ", \ndistrictWebAddress = '" + districtWebAddress + '\'' +
-                ", \ncitiesInfo = " + citiesInfo +
-                ", \nnoCity = '" + noCity + '\'' +
-                ", \nnoProvince = '" + noProvince + '\'' +
-                ", \npostalCode = '" + postalCode + '\'' +
-                ", \naddress = '" + address + '\'' +
-                ", \ncourierPostalCode = '" + courierPostalCode + '\'' +
-                ", \ncourierAddress = '" + courierAddress + '\'' +
-                ", \ncontacts = " + contacts.getClass().getName() +
-                ", \nschoolsInfo = " + schoolsInfo.getClass().getName() +
-                "\n}";
-    }
+//    @Override
+//    public String toString() {
+//        return "SchoolDistrict{\n" +
+//                "id = " + id +
+//                ", \ndistrictNumber = '" + districtNumber + '\'' +
+//                ", \ndistrictName = '" + districtName + '\'' +
+//                ", \ndistrictAbb = '" + districtAbb + '\'' +
+//                ", \ndistrictPhone = '" + districtPhone + '\'' +
+//                ", \ndistrictFax = '" + districtFax + '\'' +
+//                ", \ndistrictWebAddress = '" + districtWebAddress + '\'' +
+//                ", \ncitiesInfo = " + citiesInfo +
+//                ", \nnoCity = '" + noCity + '\'' +
+//                ", \nnoProvince = '" + noProvince + '\'' +
+//                ", \npostalCode = '" + postalCode + '\'' +
+//                ", \naddress = '" + address + '\'' +
+//                ", \ncourierPostalCode = '" + courierPostalCode + '\'' +
+//                ", \ncourierAddress = '" + courierAddress + '\'' +
+//                ", \ncontacts = " + contacts.getClass().getName() +
+//                ", \nschoolsInfo = " + schoolsInfo.getClass().getName() +
+//                "\n}";
+//    }
 }

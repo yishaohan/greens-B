@@ -1,11 +1,12 @@
 package com.ysh.projectY.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity(name = "bc_school_covid19")
-public class BCSchoolsCOVID19 {
+public class BCSchoolsCOVID19 implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,8 +14,8 @@ public class BCSchoolsCOVID19 {
     private int id;
 
     // 双向关联
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private SchoolsInfo schoolsInfo;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private SchoolsInfo schoolsInfo;
 
     @Column(name = "`school_id`", columnDefinition = "int NOT NULL comment '学校ID'")
     private int schoolId;
@@ -74,13 +75,13 @@ public class BCSchoolsCOVID19 {
         this.id = id;
     }
 
-//    public SchoolsInfo getSchoolsInfo() {
-//        return schoolsInfo;
-//    }
-//
-//    public void setSchoolsInfo(SchoolsInfo schoolsInfo) {
-//        this.schoolsInfo = schoolsInfo;
-//    }
+    public SchoolsInfo getSchoolsInfo() {
+        return schoolsInfo;
+    }
+
+    public void setSchoolsInfo(SchoolsInfo schoolsInfo) {
+        this.schoolsInfo = schoolsInfo;
+    }
 
     public int getSchoolId() {
         return schoolId;
@@ -211,27 +212,27 @@ public class BCSchoolsCOVID19 {
         this.documentation = documentation;
     }
 
-    @Override
-    public String toString() {
-        return "BCSchoolsCOVID19{\n" +
-                "id = " + id +
-//                ", \nschoolsInfo = " + schoolsInfo +
-                ", \nschoolId = " + schoolId +
-                ", \nschoolName = '" + schoolName + '\'' +
-                ", \ndistrictId = " + districtId +
-                ", \ndistrictName = '" + districtName + '\'' +
-                ", \ndistrictAbb = '" + districtAbb + '\'' +
-                ", \ncityId = " + cityId +
-                ", \ncityName = '" + cityName + '\'' +
-//                ", \nhealthRegion = " + healthRegion +
-                ", \nhealthId = " + healthId +
-                ", \nhealthRegionName = '" + healthRegionName + '\'' +
-                ", \nnotificationDate = " + notificationDate +
-                ", \nnotificationMethod = '" + notificationMethod + '\'' +
-                ", \nexposureDate = '" + exposureDate + '\'' +
-                ", \nexposureNumber = " + exposureNumber +
-                ", \nextraInfo = '" + extraInfo + '\'' +
-                ", \ndocumentation = '" + documentation + '\'' +
-                "\n}";
-    }
+//    @Override
+//    public String toString() {
+//        return "BCSchoolsCOVID19{\n" +
+//                "id = " + id +
+////                ", \nschoolsInfo = " + schoolsInfo +
+//                ", \nschoolId = " + schoolId +
+//                ", \nschoolName = '" + schoolName + '\'' +
+//                ", \ndistrictId = " + districtId +
+//                ", \ndistrictName = '" + districtName + '\'' +
+//                ", \ndistrictAbb = '" + districtAbb + '\'' +
+//                ", \ncityId = " + cityId +
+//                ", \ncityName = '" + cityName + '\'' +
+////                ", \nhealthRegion = " + healthRegion +
+//                ", \nhealthId = " + healthId +
+//                ", \nhealthRegionName = '" + healthRegionName + '\'' +
+//                ", \nnotificationDate = " + notificationDate +
+//                ", \nnotificationMethod = '" + notificationMethod + '\'' +
+//                ", \nexposureDate = '" + exposureDate + '\'' +
+//                ", \nexposureNumber = " + exposureNumber +
+//                ", \nextraInfo = '" + extraInfo + '\'' +
+//                ", \ndocumentation = '" + documentation + '\'' +
+//                "\n}";
+//    }
 }

@@ -1,8 +1,11 @@
 package com.ysh.projectY.form;
 
-public interface BCSchoolsHealthsCOVID19Summary {
+public interface BCSchoolsCOVID19DailySummary {
+
+    String getDay();
 
     String getHealthRegionName();
 
     int getCount();
+
 }

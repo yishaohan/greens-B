@@ -3,10 +3,11 @@ package com.ysh.projectY.entity;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity(name = "schools_info")
-public class SchoolsInfo {
+public class SchoolsInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +29,7 @@ public class SchoolsInfo {
 //    Set<BCSchoolsCOVID19> bcSchoolsCOVID19;
 
     // 双向关联
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     SchoolDistrict schoolDistrict;
 
     @Column(name = "`no_district_number`", columnDefinition = "varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '教育局编号'")
@@ -47,7 +48,7 @@ public class SchoolsInfo {
     private Double latitude;
 
     // 双向关联
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     CitiesInfo citiesInfo;
 
     @Column(name = "`no_city`", columnDefinition = "varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL comment '城市'")
@@ -564,59 +565,59 @@ public class SchoolsInfo {
         this.grade12Enrolment = grade12Enrolment;
     }
 
-    @Override
-    public String toString() {
-        return "SchoolsInfo{\n" +
-                "id = " + id +
-                ", \nschoolCode = '" + schoolCode + '\'' +
-                ", \nschoolName = '" + schoolName + '\'' +
-                ", \nenabled = " + enabled +
-//                ", \nbcSchoolsCOVID19 = " + bcSchoolsCOVID19.getClass().getName() +
-                ", \nschoolDistrict = " + schoolDistrict +
-                ", \nnoDistrictNumber = '" + noDistrictNumber + '\'' +
-                ", \nschoolAddress = '" + schoolAddress + '\'' +
-                ", \npostalCode = '" + postalCode + '\'' +
-                ", \nlongitude = " + longitude +
-                ", \nlatitude = " + latitude +
-                ", \ncitiesInfo = " + citiesInfo +
-                ", \nnoCity = '" + noCity + '\'' +
-                ", \nnoProvince = '" + noProvince + '\'' +
-                ", \nprincipalTitle = '" + principalTitle + '\'' +
-                ", \nprincipalFirstName = '" + principalFirstName + '\'' +
-                ", \nprincipalLastName = '" + principalLastName + '\'' +
-                ", \nschoolType = '" + schoolType + '\'' +
-                ", \ngradeRange = '" + gradeRange + '\'' +
-                ", \nschoolCategory = '" + schoolCategory + '\'' +
-                ", \nfundingGroups = " + fundingGroups +
-                ", \nnlcEarlyLearning = '" + nlcEarlyLearning + '\'' +
-                ", \nnlcAfterSchool = '" + nlcAfterSchool + '\'' +
-                ", \nnlcContEd = '" + nlcContEd + '\'' +
-                ", \nnlcSeniors = '" + nlcSeniors + '\'' +
-                ", \nnlcCommSport = '" + nlcCommSport + '\'' +
-                ", \nnlcCommUse = '" + nlcCommUse + '\'' +
-                ", \nnlcIntegrSvcs = '" + nlcIntegrSvcs + '\'' +
-                ", \nschoolPhone = '" + schoolPhone + '\'' +
-                ", \nschoolFax = '" + schoolFax + '\'' +
-                ", \nschoolEmail = '" + schoolEmail + '\'' +
-                ", \nenrolmentTotal = " + enrolmentTotal +
-                ", \nenrolmentAsOf = '" + enrolmentAsOf + '\'' +
-                ", \nkhEnrolment = " + khEnrolment +
-                ", \nkfEnrolment = " + kfEnrolment +
-                ", \nhsRegistration = " + hsRegistration +
-                ", \nsuEnrolment = " + suEnrolment +
-                ", \neuEnrolment = " + euEnrolment +
-                ", \ngrade1Enrolment = " + grade1Enrolment +
-                ", \ngrade2Enrolment = " + grade2Enrolment +
-                ", \ngrade3Enrolment = " + grade3Enrolment +
-                ", \ngrade4Enrolment = " + grade4Enrolment +
-                ", \ngrade5Enrolment = " + grade5Enrolment +
-                ", \ngrade6Enrolment = " + grade6Enrolment +
-                ", \ngrade7Enrolment = " + grade7Enrolment +
-                ", \ngrade8Enrolment = " + grade8Enrolment +
-                ", \ngrade9Enrolment = " + grade9Enrolment +
-                ", \ngrade10Enrolment = " + grade10Enrolment +
-                ", \ngrade11Enrolment = " + grade11Enrolment +
-                ", \ngrade12Enrolment = " + grade12Enrolment +
-                "\n}";
-    }
+//    @Override
+//    public String toString() {
+//        return "SchoolsInfo{\n" +
+//                "id = " + id +
+//                ", \nschoolCode = '" + schoolCode + '\'' +
+//                ", \nschoolName = '" + schoolName + '\'' +
+//                ", \nenabled = " + enabled +
+////                ", \nbcSchoolsCOVID19 = " + bcSchoolsCOVID19.getClass().getName() +
+//                ", \nschoolDistrict = " + schoolDistrict +
+//                ", \nnoDistrictNumber = '" + noDistrictNumber + '\'' +
+//                ", \nschoolAddress = '" + schoolAddress + '\'' +
+//                ", \npostalCode = '" + postalCode + '\'' +
+//                ", \nlongitude = " + longitude +
+//                ", \nlatitude = " + latitude +
+//                ", \ncitiesInfo = " + citiesInfo +
+//                ", \nnoCity = '" + noCity + '\'' +
+//                ", \nnoProvince = '" + noProvince + '\'' +
+//                ", \nprincipalTitle = '" + principalTitle + '\'' +
+//                ", \nprincipalFirstName = '" + principalFirstName + '\'' +
+//                ", \nprincipalLastName = '" + principalLastName + '\'' +
+//                ", \nschoolType = '" + schoolType + '\'' +
+//                ", \ngradeRange = '" + gradeRange + '\'' +
+//                ", \nschoolCategory = '" + schoolCategory + '\'' +
+//                ", \nfundingGroups = " + fundingGroups +
+//                ", \nnlcEarlyLearning = '" + nlcEarlyLearning + '\'' +
+//                ", \nnlcAfterSchool = '" + nlcAfterSchool + '\'' +
+//                ", \nnlcContEd = '" + nlcContEd + '\'' +
+//                ", \nnlcSeniors = '" + nlcSeniors + '\'' +
+//                ", \nnlcCommSport = '" + nlcCommSport + '\'' +
+//                ", \nnlcCommUse = '" + nlcCommUse + '\'' +
+//                ", \nnlcIntegrSvcs = '" + nlcIntegrSvcs + '\'' +
+//                ", \nschoolPhone = '" + schoolPhone + '\'' +
+//                ", \nschoolFax = '" + schoolFax + '\'' +
+//                ", \nschoolEmail = '" + schoolEmail + '\'' +
+//                ", \nenrolmentTotal = " + enrolmentTotal +
+//                ", \nenrolmentAsOf = '" + enrolmentAsOf + '\'' +
+//                ", \nkhEnrolment = " + khEnrolment +
+//                ", \nkfEnrolment = " + kfEnrolment +
+//                ", \nhsRegistration = " + hsRegistration +
+//                ", \nsuEnrolment = " + suEnrolment +
+//                ", \neuEnrolment = " + euEnrolment +
+//                ", \ngrade1Enrolment = " + grade1Enrolment +
+//                ", \ngrade2Enrolment = " + grade2Enrolment +
+//                ", \ngrade3Enrolment = " + grade3Enrolment +
+//                ", \ngrade4Enrolment = " + grade4Enrolment +
+//                ", \ngrade5Enrolment = " + grade5Enrolment +
+//                ", \ngrade6Enrolment = " + grade6Enrolment +
+//                ", \ngrade7Enrolment = " + grade7Enrolment +
+//                ", \ngrade8Enrolment = " + grade8Enrolment +
+//                ", \ngrade9Enrolment = " + grade9Enrolment +
+//                ", \ngrade10Enrolment = " + grade10Enrolment +
+//                ", \ngrade11Enrolment = " + grade11Enrolment +
+//                ", \ngrade12Enrolment = " + grade12Enrolment +
+//                "\n}";
+//    }
 }
