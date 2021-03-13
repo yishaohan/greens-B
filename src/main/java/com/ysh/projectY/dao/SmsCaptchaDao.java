@@ -14,7 +14,7 @@ public interface SmsCaptchaDao extends JpaRepository<SmsCaptcha, Integer> {
 
     List<SmsCaptcha> findByMobilePhoneAndStatus(String mobilePhone, String status);
 
-    @Query(value = "select * from project_y.sms_captcha where id = (select max(id) from project_y.sms_captcha where status = 'CREATED' and mobile_phone =:mobilePhone)", nativeQuery = true)
+    @Query(value = "select * from sms_captcha where id = (select max(id) from sms_captcha where status = 'CREATED' and mobile_phone =:mobilePhone)", nativeQuery = true)
     Optional<SmsCaptcha> findLastValidSmsCaptchaByMobilePhone(String mobilePhone);
 
     List<SmsCaptcha> findBySourceAndClientIpAndCreateDateTimeGreaterThan(String source, String clientIp, Timestamp timestamp);

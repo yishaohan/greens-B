@@ -17,6 +17,6 @@ public interface RoleDao extends JpaRepository<Role, Integer>, JpaSpecificationE
 
     Page<Role> findAllByRoleNameContainingAndRoleDescriptContaining(String roleName, String roleDescript, Pageable pageable);
 
-    @Query(value = "select count(*) from project_y.user_roles where roles_id=:roleId", nativeQuery = true)
+    @Query(value = "select count(*) from user_roles where roles_id=:roleId", nativeQuery = true)
     int findUsedCountByRoleId(int roleId);
 }

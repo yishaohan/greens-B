@@ -18,10 +18,10 @@ public interface UserDao extends JpaRepository<User, Integer> {
 
     Optional<User> findByMobilePhone(String mobilePhone);
 
-    @Query(value = "select id, username, mobile_phone, password, nickname, avatar_url, create_date_time, user_enabled, user_locked from project_y.user where username=:username", nativeQuery = true)
+    @Query(value = "select id, username, mobile_phone, password, nickname, avatar_url, create_date_time, user_enabled, user_locked from user where username=:username", nativeQuery = true)
     User loadUserByUserName(String username);
 
-    @Query(value = "select id, username, mobile_phone, password, nickname, avatar_url, create_date_time, user_enabled, user_locked from project_y.user where mobile_phone=:mobilePhone", nativeQuery = true)
+    @Query(value = "select id, username, mobile_phone, password, nickname, avatar_url, create_date_time, user_enabled, user_locked from user where mobile_phone=:mobilePhone", nativeQuery = true)
     User loadUserByMobilePhone(String mobilePhone);
 
 //    @Query(value = "select r.* from project_y.role r,project_y.user_role ur where r.id=ur.role_id and ur.user_id=:userID", nativeQuery = true)
