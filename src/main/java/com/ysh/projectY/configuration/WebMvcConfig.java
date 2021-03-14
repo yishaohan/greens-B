@@ -1,8 +1,11 @@
 package com.ysh.projectY.configuration;
 
+import com.ysh.projectY.interceptor.Request;
+import com.ysh.projectY.service.LogsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -14,6 +17,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Value("${projectY.api-base-path}")
     private String apiBasePath;
+
+    final LogsService logsService;
+
+    public WebMvcConfig(LogsService logsService) {
+        this.logsService = logsService;
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -40,4 +49,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
 ////                .exposedHeaders("content-type")
 //                .maxAge(1800);
 //    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new Request(logsService))
+                .excludePathPatterns("/bootstrap/**")
+                .excludePathPatterns("/image/**")
+                .excludePathPatterns("/favicon.ico");
+    }
+
 }

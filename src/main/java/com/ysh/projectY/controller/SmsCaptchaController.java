@@ -34,14 +34,18 @@ public class SmsCaptchaController {
     @PostMapping("/smsCaptcha")
     public HttpEntity<?> sendSms(@Valid @RequestBody SmsCaptcha smsCaptchaForm, HttpServletRequest req) {
         System.out.println("SmsCaptchaForm验证完成!");
-        MethodResponse methodResponse = smsCaptchaService.sendSmsCaptchaVerify(smsCaptchaForm.getMobilePhone(), smsCaptchaForm.getSource(), req.getRemoteAddr());
+        String remoteAddr = req.getHeader("X-Real-IP");
+        if (remoteAddr == null) {
+            remoteAddr = req.getRemoteAddr();
+        }
+        MethodResponse methodResponse = smsCaptchaService.sendSmsCaptchaVerify(smsCaptchaForm.getMobilePhone(), smsCaptchaForm.getSource(), remoteAddr);
         if (!methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.failure(HttpStatus.UNPROCESSABLE_ENTITY.value(), methodResponse.getI18nMessageKey(), methodResponse.getData(), methodResponse.getDetail()), HttpStatus.OK);
         }
         com.ysh.projectY.entity.SmsCaptcha smsCaptcha = new com.ysh.projectY.entity.SmsCaptcha();
         smsCaptcha.setMobilePhone(smsCaptchaForm.getMobilePhone());
         smsCaptcha.setSource(smsCaptchaForm.getSource());
-        smsCaptcha.setClientIp(req.getRemoteAddr());
+        smsCaptcha.setClientIp(remoteAddr);
         methodResponse = smsCaptchaService.sendSmsCaptcha(smsCaptcha);
         if (methodResponse.isSuccess()) {
             return new ResponseEntity<>(JsonResponse.success(HttpStatus.CREATED.value(), methodResponse.getI18nMessageKey()), HttpStatus.CREATED);

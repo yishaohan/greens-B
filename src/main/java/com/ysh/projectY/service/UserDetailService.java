@@ -38,6 +38,9 @@ public class UserDetailService implements UserDetailsService {
     @Value("${projectY.api-base-path}")
     private String apiBasePath;
 
+    @Value("${projecty.proxy-url}")
+    private String proxyUrl;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("loadUserByUsername(String username=" + username + ")");
@@ -73,7 +76,7 @@ public class UserDetailService implements UserDetailsService {
         try {
             user = (User) authentication.getPrincipal();
         } catch (ClassCastException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             System.out.println(authentication.getPrincipal());
             return MethodResponse.failure("projectY.UserService.getUser.failure.ClassCastException", e.toString());
         } catch (Exception e) {
@@ -236,7 +239,8 @@ public class UserDetailService implements UserDetailsService {
         String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."), oldName.length());
         try {
             uploadFile.transferTo(new File(folder, newName));
-            String filePath = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + apiBasePath + "/user/avatars/" + format + newName;
+//            String filePath = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + apiBasePath + "/user/avatars/" + format + newName;
+            String filePath = proxyUrl + apiBasePath + "/user/avatars/" + format + newName;
             return MethodResponse.success("projectY.UserService.createAvatar.success", "", filePath);
         } catch (IOException e) {
             e.printStackTrace();

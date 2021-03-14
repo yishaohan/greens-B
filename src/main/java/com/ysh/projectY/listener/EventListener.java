@@ -65,7 +65,12 @@ public class EventListener implements ApplicationListener<ApplicationEvent> {
                     if (session != null) {
                         loginLogs.setSessionID(session.getId());
                     }
-                    loginLogs.setClientIP(req.getRemoteAddr());
+                    String remoteAddr = req.getHeader("X-Real-IP");
+                    if (remoteAddr == null) {
+                        loginLogs.setClientIP(req.getRemoteAddr());
+                    } else {
+                        loginLogs.setClientIP(remoteAddr);
+                    }
                 }
             } else {
                 loginLogs.setLoginURL("unKnown");

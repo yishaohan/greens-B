@@ -7,12 +7,12 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-//@Configuration 禁用
+@Configuration
 public class EnableHttpWithHttpsConfig {
 //    @Value("${http.port}")
 //    private int httpPort;
 
-    // @Component
+    //    @Component
     public class CustomContainer implements WebServerFactoryCustomizer<TomcatServletWebServerFactory> {
 
         @Override

@@ -50,7 +50,12 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         if (session != null) {
             loginLogs.setSessionID(session.getId());
         }
-        loginLogs.setClientIP(req.getRemoteAddr());
+        String remoteAddr = req.getHeader("X-Real-IP");
+        if (remoteAddr == null) {
+            loginLogs.setClientIP(req.getRemoteAddr());
+        } else {
+            loginLogs.setClientIP(remoteAddr);
+        }
         loginLogs.setStatus("SUCCESS");
         loginLogs.setLoginDateTime(new Timestamp(System.currentTimeMillis()));
         loginLogsService.saveAndFlush(loginLogs);

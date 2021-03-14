@@ -28,6 +28,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${server.port}")
     private int httpsPort;
 
+//    @Value("${http.port}")
+//    private int httpPort;
+
     @Value("${server.ssl.enabled}") //生产环境关闭SSL后, 同时关闭
     private boolean sslEnabled;
 
@@ -77,8 +80,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
         // 由负载均衡NGINX提供HTTPS
-        // httpSecurity.portMapper().http(httpPort).mapsTo(httpsPort);
-        // httpSecurity.requiresChannel(channel -> channel.anyRequest().requiresSecure());
+//        httpSecurity.portMapper().http(httpPort).mapsTo(httpsPort);
+//        httpSecurity.requiresChannel(channel -> channel.anyRequest().requiresSecure());
 
         httpSecurity.addFilterBefore(new UsernamePasswordLoginFilter(authenticationFailureHandler), UsernamePasswordAuthenticationFilter.class);
 
