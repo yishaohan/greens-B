@@ -4,7 +4,6 @@ import com.ysh.projectY.interceptor.Request;
 import com.ysh.projectY.service.LogsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,6 +16,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Value("${projectY.api-base-path}")
     private String apiBasePath;
+
+    @Value("${projectY.paypal-isSandbox}")
+    private boolean flag;
 
     final LogsService logsService;
 
@@ -52,6 +54,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        System.out.println("flag1: " + flag);
         registry.addInterceptor(new Request(logsService))
                 .excludePathPatterns("/bootstrap/**")
                 .excludePathPatterns("/image/**")

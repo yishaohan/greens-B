@@ -1,15 +1,12 @@
 package com.ysh.projectY.service;
 
+import com.paypal.core.PayPalHttpClient;
 import com.paypal.http.HttpResponse;
 import com.paypal.orders.*;
 import com.ysh.projectY.dao.OrderDao;
 import com.ysh.projectY.entity.Message;
 import com.ysh.projectY.entity.Order;
-import com.ysh.projectY.form.CancelOrder;
-import com.ysh.projectY.form.CreateOrder;
-import com.ysh.projectY.form.ErrorOrder;
-import com.ysh.projectY.form.UpdateOrder;
-import com.ysh.projectY.paypal.Credentials;
+import com.ysh.projectY.form.*;
 import com.ysh.projectY.utils.MethodResponse;
 import com.ysh.projectY.utils.StringUtils;
 import org.springframework.data.domain.Page;
@@ -30,10 +27,12 @@ public class OrderService {
 
     MessageService messageService;
     final OrderDao orderDao;
+    final PayPalHttpClient payPalHttpClient;
 
-    public OrderService(MessageService messageService, OrderDao orderDao) {
+    public OrderService(MessageService messageService, OrderDao orderDao, PayPalHttpClient payPalHttpClient) {
         this.messageService = messageService;
         this.orderDao = orderDao;
+        this.payPalHttpClient=payPalHttpClient;
     }
 
     public MethodResponse createOrder(CreateOrder createOrder) {
@@ -44,25 +43,32 @@ public class OrderService {
         Order paypalOrder = new Order();
         paypalOrder.setClientOrderID(createOrder.getOrderId());
         paypalOrder.setName(createOrder.getName());
-        paypalOrder.setTelePhone(createOrder.getTelePhone());
+        paypalOrder.setTelePhone(createOrder.getTelephone());
         paypalOrder.setEmail(createOrder.getEmail());
         paypalOrder.setPostcode(createOrder.getPostcode());
         paypalOrder.setAddress(createOrder.getAddress());
         paypalOrder.setRemark(createOrder.getRemark());
-        paypalOrder.setClientQuantity(createOrder.getQuantity());
-        paypalOrder.setItem1(createOrder.getItem1());
-        paypalOrder.setItem2(createOrder.getItem2());
-        paypalOrder.setItem3(createOrder.getItem3());
-        paypalOrder.setItem4(createOrder.getItem4());
-        paypalOrder.setItem5(createOrder.getItem5());
-        paypalOrder.setItem6(createOrder.getItem6());
+        paypalOrder.setClientQuantity1(createOrder.getQuantity1());
+        paypalOrder.setClientQuantity2(createOrder.getQuantity2());
+        paypalOrder.setItem1_1(createOrder.getItem1_1());
+        paypalOrder.setItem1_2(createOrder.getItem1_2());
+        paypalOrder.setItem1_3(createOrder.getItem1_3());
+        paypalOrder.setItem1_4(createOrder.getItem1_4());
+        paypalOrder.setItem1_5(createOrder.getItem1_5());
+        paypalOrder.setItem1_6(createOrder.getItem1_6());
+        paypalOrder.setItem2_1(createOrder.getItem2_1());
+        paypalOrder.setItem2_2(createOrder.getItem2_2());
+        paypalOrder.setItem2_3(createOrder.getItem2_3());
+        paypalOrder.setItem2_4(createOrder.getItem2_4());
+        paypalOrder.setItem2_5(createOrder.getItem2_5());
+        paypalOrder.setItem2_6(createOrder.getItem2_6());
         paypalOrder.setCreateDateTime(utc);
         OrdersGetRequest request = new OrdersGetRequest(createOrder.getOrderId());
         HttpResponse<com.paypal.orders.Order> response = null;
         try {
 
             try {
-                response = Credentials.paypalClient.execute(request);
+                response = payPalHttpClient.execute(request);
             } catch (IOException e) {
                 error += "Network Error !";
                 message.setSubject("Error Order");
@@ -212,7 +218,7 @@ public class OrderService {
         Message message = new Message();
         message.setCreateDateTime(new Timestamp(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime().getTime()));
         message.setSubject("Canceled Order !");
-        message.setMessage("[" + cancelOrder.getOrderId() + "]: " + cancelOrder.getName() + ", " + cancelOrder.getTelePhone() + ", " + cancelOrder.getEmail() + ", " + cancelOrder.getPostcode() + ", " + cancelOrder.getAddress() + ", " + cancelOrder.getRemark() + ", " + cancelOrder.getQuantity() + ", " + cancelOrder.getItem1() + ", " + cancelOrder.getItem2() + ", " + cancelOrder.getItem3() + ", " + cancelOrder.getItem4() + ", " + cancelOrder.getItem5() + ", " + cancelOrder.getItem6());
+        message.setMessage("[" + cancelOrder.getOrderId() + "]: " + cancelOrder.getName() + ", " + cancelOrder.getTelePhone() + ", " + cancelOrder.getEmail() + ", " + cancelOrder.getPostcode() + ", " + cancelOrder.getAddress() + ", " + cancelOrder.getRemark() + ", " + cancelOrder.getQuantity1() + ", " + cancelOrder.getItem1_1() + ", " + cancelOrder.getItem1_2() + ", " + cancelOrder.getItem1_3() + ", " + cancelOrder.getItem1_4() + ", " + cancelOrder.getQuantity2() + ", " + cancelOrder.getItem2_1() + ", " + cancelOrder.getItem2_2() + ", " + cancelOrder.getItem2_3() + ", " + cancelOrder.getItem2_4());
         try {
             messageService.save(message);
         } catch (Exception e) {
@@ -226,7 +232,7 @@ public class OrderService {
         Message message = new Message();
         message.setCreateDateTime(new Timestamp(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime().getTime()));
         message.setSubject("Wrong Order !");
-        message.setMessage("[" + errorOrder.getError() + "]: " + errorOrder.getName() + ", " + errorOrder.getTelePhone() + ", " + errorOrder.getEmail() + ", " + errorOrder.getPostcode() + ", " + errorOrder.getAddress() + ", " + errorOrder.getRemark() + ", " + errorOrder.getQuantity() + ", " + errorOrder.getItem1() + ", " + errorOrder.getItem2() + ", " + errorOrder.getItem3() + ", " + errorOrder.getItem4() + ", " + errorOrder.getItem5() + ", " + errorOrder.getItem6());
+        message.setMessage("[" + errorOrder.getError() + "]: " + errorOrder.getName() + ", " + errorOrder.getTelePhone() + ", " + errorOrder.getEmail() + ", " + errorOrder.getPostcode() + ", " + errorOrder.getAddress() + ", " + errorOrder.getRemark() + ", " + errorOrder.getQuantity1() + ", " + errorOrder.getItem1_1() + ", " + errorOrder.getItem1_2() + ", " + errorOrder.getItem1_3() + ", " + errorOrder.getItem1_4() + ", " + errorOrder.getQuantity2() + ", " + errorOrder.getItem2_1() + ", " + errorOrder.getItem2_2() + ", " + errorOrder.getItem2_3() + ", " + errorOrder.getItem2_4());
         messageService.save(message);
         try {
             messageService.save(message);
@@ -240,6 +246,12 @@ public class OrderService {
     public Page<Order> getOrders(String name, String telePhone, String email, String orderId, Pageable pageable) {
         final Page<Order> page = orderDao.findAllByNameContainingAndTelePhoneContainingAndEmailContainingAndOrderIDContaining(name, telePhone, email, orderId, pageable);
         return page;
+    }
+
+    public Statistics getStatistics() {
+        Statistics statistics = orderDao.getStatistics();
+        System.out.println("statistics: " + statistics);
+        return statistics;
     }
 
     @Transactional(rollbackFor = {Exception.class})

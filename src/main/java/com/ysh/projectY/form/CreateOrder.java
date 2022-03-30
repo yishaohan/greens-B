@@ -1,10 +1,7 @@
 package com.ysh.projectY.form;
 
 import com.ysh.projectY.form.valid.group.First;
-import com.ysh.projectY.form.valid.group.Second;
-import org.hibernate.validator.constraints.Length;
 
-import javax.validation.GroupSequence;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,8 +14,8 @@ public class CreateOrder {
     @NotBlank(message = "project-y.valid.CreateOrder.name.not-blank", groups = First.class)
     private String name;
 
-    @NotBlank(message = "project-y.valid.CreateOrder.telePhone.not-blank", groups = First.class)
-    private String telePhone;
+    @NotBlank(message = "project-y.valid.CreateOrder.telephone.not-blank", groups = First.class)
+    private String telephone;
 
     @NotBlank(message = "project-y.valid.CreateOrder.email.not-blank", groups = First.class)
     private String email;
@@ -33,26 +30,48 @@ public class CreateOrder {
     private String remark;
 
     @NotNull(message = "project-y.valid.CreateOrder.quantity.not-null", groups = First.class)
-    @DecimalMin(message = "project-y.valid.CreateOrder.quantity.decimal-min", value = "1", groups = First.class)
-    private Integer quantity;
+    @DecimalMin(message = "project-y.valid.CreateOrder.quantity.decimal-min", value = "0", groups = First.class)
+    private Integer quantity1;
 
-    @NotNull(message = "project-y.valid.CreateOrder.item1.not-null", groups = First.class)
-    private Boolean item1;
+    @NotNull(message = "project-y.valid.CreateOrder.quantity1.not-null", groups = First.class)
+    @DecimalMin(message = "project-y.valid.CreateOrder.quantity2.decimal-min", value = "0", groups = First.class)
+    private Integer quantity2;
 
-    @NotNull(message = "project-y.valid.CreateOrder.item2.not-null", groups = First.class)
-    private Boolean item2;
+    @NotNull(message = "project-y.valid.CreateOrder.item1_1.not-null", groups = First.class)
+    private Integer item1_1;
 
-    @NotNull(message = "project-y.valid.CreateOrder.item3.not-null", groups = First.class)
-    private Boolean item3;
+    @NotNull(message = "project-y.valid.CreateOrder.item1_2.not-null", groups = First.class)
+    private Integer item1_2;
 
-    @NotNull(message = "project-y.valid.CreateOrder.item4.not-null", groups = First.class)
-    private Boolean item4;
+    @NotNull(message = "project-y.valid.CreateOrder.item1_3.not-null", groups = First.class)
+    private Integer item1_3;
 
-    @NotNull(message = "project-y.valid.CreateOrder.item5.not-null", groups = First.class)
-    private Boolean item5;
+    @NotNull(message = "project-y.valid.CreateOrder.item1_4.not-null", groups = First.class)
+    private Integer item1_4;
 
-    @NotNull(message = "project-y.valid.CreateOrder.item6.not-null", groups = First.class)
-    private Boolean item6;
+    @NotNull(message = "project-y.valid.CreateOrder.item1_5.not-null", groups = First.class)
+    private Integer item1_5;
+
+    @NotNull(message = "project-y.valid.CreateOrder.item1_6.not-null", groups = First.class)
+    private Integer item1_6;
+
+    @NotNull(message = "project-y.valid.CreateOrder.item2_1.not-null", groups = First.class)
+    private Integer item2_1;
+
+    @NotNull(message = "project-y.valid.CreateOrder.item2_2.not-null", groups = First.class)
+    private Integer item2_2;
+
+    @NotNull(message = "project-y.valid.CreateOrder.item2_3.not-null", groups = First.class)
+    private Integer item2_3;
+
+    @NotNull(message = "project-y.valid.CreateOrder.item2_4.not-null", groups = First.class)
+    private Integer item2_4;
+
+    @NotNull(message = "project-y.valid.CreateOrder.item2_5.not-null", groups = First.class)
+    private Integer item2_5;
+
+    @NotNull(message = "project-y.valid.CreateOrder.item2_6.not-null", groups = First.class)
+    private Integer item2_6;
 
     public String getOrderId() {
         return orderId;
@@ -70,12 +89,12 @@ public class CreateOrder {
         this.name = name;
     }
 
-    public String getTelePhone() {
-        return telePhone;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setTelePhone(String telePhone) {
-        this.telePhone = telePhone;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getEmail() {
@@ -110,60 +129,116 @@ public class CreateOrder {
         this.remark = remark;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getQuantity1() {
+        return quantity1;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setQuantity1(Integer quantity1) {
+        this.quantity1 = quantity1;
     }
 
-    public Boolean getItem1() {
-        return item1;
+    public Integer getQuantity2() {
+        return quantity2;
     }
 
-    public void setItem1(Boolean item1) {
-        this.item1 = item1;
+    public void setQuantity2(Integer quantity2) {
+        this.quantity2 = quantity2;
     }
 
-    public Boolean getItem2() {
-        return item2;
+    public Integer getItem1_1() {
+        return item1_1;
     }
 
-    public void setItem2(Boolean item2) {
-        this.item2 = item2;
+    public void setItem1_1(Integer item1_1) {
+        this.item1_1 = item1_1;
     }
 
-    public Boolean getItem3() {
-        return item3;
+    public Integer getItem1_2() {
+        return item1_2;
     }
 
-    public void setItem3(Boolean item3) {
-        this.item3 = item3;
+    public void setItem1_2(Integer item1_2) {
+        this.item1_2 = item1_2;
     }
 
-    public Boolean getItem4() {
-        return item4;
+    public Integer getItem1_3() {
+        return item1_3;
     }
 
-    public void setItem4(Boolean item4) {
-        this.item4 = item4;
+    public void setItem1_3(Integer item1_3) {
+        this.item1_3 = item1_3;
     }
 
-    public Boolean getItem5() {
-        return item5;
+    public Integer getItem1_4() {
+        return item1_4;
     }
 
-    public void setItem5(Boolean item5) {
-        this.item5 = item5;
+    public Integer getItem1_5() {
+        return item1_5;
     }
 
-    public Boolean getItem6() {
-        return item6;
+    public void setItem1_5(Integer item1_5) {
+        this.item1_5 = item1_5;
     }
 
-    public void setItem6(Boolean item6) {
-        this.item6 = item6;
+    public Integer getItem1_6() {
+        return item1_6;
+    }
+
+    public void setItem1_6(Integer item1_6) {
+        this.item1_6 = item1_6;
+    }
+
+    public void setItem1_4(Integer item1_4) {
+        this.item1_4 = item1_4;
+    }
+
+    public Integer getItem2_1() {
+        return item2_1;
+    }
+
+    public void setItem2_1(Integer item2_1) {
+        this.item2_1 = item2_1;
+    }
+
+    public Integer getItem2_2() {
+        return item2_2;
+    }
+
+    public void setItem2_2(Integer item2_2) {
+        this.item2_2 = item2_2;
+    }
+
+    public Integer getItem2_3() {
+        return item2_3;
+    }
+
+    public void setItem2_3(Integer item2_3) {
+        this.item2_3 = item2_3;
+    }
+
+    public Integer getItem2_4() {
+        return item2_4;
+    }
+
+    public void setItem2_4(Integer item2_4) {
+        this.item2_4 = item2_4;
+    }
+
+    public Integer getItem2_5() {
+        return item2_5;
+    }
+
+    public void setItem2_5(Integer item2_5) {
+        this.item2_5 = item2_5;
+    }
+
+    public Integer getItem2_6() {
+        return item2_6;
+    }
+
+    public void setItem2_6(Integer item2_6) {
+        this.item2_6 = item2_6;
     }
 
     @Override
@@ -171,18 +246,25 @@ public class CreateOrder {
         return "CreateOrder{" +
                 "orderId='" + orderId + '\'' +
                 ", name='" + name + '\'' +
-                ", telePhone='" + telePhone + '\'' +
+                ", telephone='" + telephone + '\'' +
                 ", email='" + email + '\'' +
                 ", postcode='" + postcode + '\'' +
                 ", address='" + address + '\'' +
                 ", remark='" + remark + '\'' +
-                ", quantity=" + quantity +
-                ", item1=" + item1 +
-                ", item2=" + item2 +
-                ", item3=" + item3 +
-                ", item4=" + item4 +
-                ", item5=" + item5 +
-                ", item6=" + item6 +
+                ", quantity1=" + quantity1 +
+                ", quantity2=" + quantity2 +
+                ", item1_1=" + item1_1 +
+                ", item1_2=" + item1_2 +
+                ", item1_3=" + item1_3 +
+                ", item1_4=" + item1_4 +
+                ", item1_5=" + item1_5 +
+                ", item1_6=" + item1_6 +
+                ", item2_1=" + item2_1 +
+                ", item2_2=" + item2_2 +
+                ", item2_3=" + item2_3 +
+                ", item2_4=" + item2_4 +
+                ", item2_5=" + item2_5 +
+                ", item2_6=" + item2_6 +
                 '}';
     }
 }

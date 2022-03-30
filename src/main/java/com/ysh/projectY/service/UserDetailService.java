@@ -38,7 +38,7 @@ public class UserDetailService implements UserDetailsService {
     @Value("${projectY.api-base-path}")
     private String apiBasePath;
 
-    @Value("${projecty.proxy-url}")
+    @Value("${projectY.proxy-url}")
     private String proxyUrl;
 
     @Override

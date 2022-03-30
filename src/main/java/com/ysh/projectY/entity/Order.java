@@ -35,32 +35,59 @@ public class Order {
     @Column(name = "`remark`", columnDefinition = "varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci comment '备注'")
     private String remark;
 
-    @Column(name = "`client_quantity`", columnDefinition = "int NOT NULL comment '数量'")
-    private int clientQuantity;
+    @Column(name = "`client_quantity1`", columnDefinition = "int NOT NULL comment '数量1'")
+    private int clientQuantity1;
+
+    @Column(name = "`client_quantity2`", columnDefinition = "int NOT NULL comment '数量2'")
+    private int clientQuantity2;
 
     @ColumnDefault("0")
-    @Column(name = "`item1`", columnDefinition = "tinyint(1) NOT NULL comment '商品1'")
-    private boolean item1;
+    @Column(name = "`item1_1`", columnDefinition = "int NOT NULL comment '商品1_1'")
+    private int item1_1;
 
     @ColumnDefault("0")
-    @Column(name = "`item2`", columnDefinition = "tinyint(1) NOT NULL comment '商品2'")
-    private boolean item2;
+    @Column(name = "`item1_2`", columnDefinition = "int NOT NULL comment '商品1_2'")
+    private int item1_2;
 
     @ColumnDefault("0")
-    @Column(name = "`item3`", columnDefinition = "tinyint(1) NOT NULL comment '商品3'")
-    private boolean item3;
+    @Column(name = "`item1_3`", columnDefinition = "int NOT NULL comment '商品1_3'")
+    private int item1_3;
 
     @ColumnDefault("0")
-    @Column(name = "`item4`", columnDefinition = "tinyint(1) NOT NULL comment '商品4'")
-    private boolean item4;
+    @Column(name = "`item1_4`", columnDefinition = "int NOT NULL comment '商品1_4'")
+    private int item1_4;
 
     @ColumnDefault("0")
-    @Column(name = "`item5`", columnDefinition = "tinyint(1) NOT NULL comment '商品5'")
-    private boolean item5;
+    @Column(name = "`item1_5`", columnDefinition = "int NOT NULL comment '商品1_5'")
+    private int item1_5;
 
     @ColumnDefault("0")
-    @Column(name = "`item6`", columnDefinition = "tinyint(1) NOT NULL comment '商品6'")
-    private boolean item6;
+    @Column(name = "`item1_6`", columnDefinition = "int NOT NULL comment '商品1_6'")
+    private int item1_6;
+
+    @ColumnDefault("0")
+    @Column(name = "`item2_1`", columnDefinition = "int NOT NULL comment '商品2_1'")
+    private int item2_1;
+
+    @ColumnDefault("0")
+    @Column(name = "`item2_2`", columnDefinition = "int NOT NULL comment '商品2_2'")
+    private int item2_2;
+
+    @ColumnDefault("0")
+    @Column(name = "`item2_3`", columnDefinition = "int NOT NULL comment '商品2_3'")
+    private int item2_3;
+
+    @ColumnDefault("0")
+    @Column(name = "`item2_4`", columnDefinition = "int NOT NULL comment '商品2_4'")
+    private int item2_4;
+
+    @ColumnDefault("0")
+    @Column(name = "`item2_5`", columnDefinition = "int NOT NULL comment '商品2_5'")
+    private int item2_5;
+
+    @ColumnDefault("0")
+    @Column(name = "`item2_6`", columnDefinition = "int NOT NULL comment '商品2_6'")
+    private int item2_6;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Vancouver")
     @Column(name = "`create_date_time`", columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP comment '订单创建时间'")
@@ -237,60 +264,116 @@ public class Order {
         this.remark = remark;
     }
 
-    public int getClientQuantity() {
-        return clientQuantity;
+    public int getClientQuantity1() {
+        return clientQuantity1;
     }
 
-    public void setClientQuantity(int clientQuantity) {
-        this.clientQuantity = clientQuantity;
+    public void setClientQuantity1(int clientQuantity) {
+        this.clientQuantity1 = clientQuantity;
     }
 
-    public boolean isItem1() {
-        return item1;
+    public int getClientQuantity2() {
+        return clientQuantity2;
     }
 
-    public void setItem1(boolean item1) {
-        this.item1 = item1;
+    public void setClientQuantity2(int clientQuantity2) {
+        this.clientQuantity2 = clientQuantity2;
     }
 
-    public boolean isItem2() {
-        return item2;
+    public int getItem1_1() {
+        return item1_1;
     }
 
-    public void setItem2(boolean item2) {
-        this.item2 = item2;
+    public void setItem1_1(int item1_1) {
+        this.item1_1 = item1_1;
     }
 
-    public boolean isItem3() {
-        return item3;
+    public int getItem1_2() {
+        return item1_2;
     }
 
-    public void setItem3(boolean item3) {
-        this.item3 = item3;
+    public void setItem1_2(int item1_2) {
+        this.item1_2 = item1_2;
     }
 
-    public boolean isItem4() {
-        return item4;
+    public int getItem1_3() {
+        return item1_3;
     }
 
-    public void setItem4(boolean item4) {
-        this.item4 = item4;
+    public void setItem1_3(int item1_3) {
+        this.item1_3 = item1_3;
     }
 
-    public boolean isItem5() {
-        return item5;
+    public int getItem1_4() {
+        return item1_4;
     }
 
-    public void setItem5(boolean item5) {
-        this.item5 = item5;
+    public void setItem1_4(int item1_4) {
+        this.item1_4 = item1_4;
     }
 
-    public boolean isItem6() {
-        return item6;
+    public int getItem1_5() {
+        return item1_5;
     }
 
-    public void setItem6(boolean item6) {
-        this.item6 = item6;
+    public void setItem1_5(int item1_5) {
+        this.item1_5 = item1_5;
+    }
+
+    public int getItem1_6() {
+        return item1_6;
+    }
+
+    public void setItem1_6(int item1_6) {
+        this.item1_6 = item1_6;
+    }
+
+    public int getItem2_1() {
+        return item2_1;
+    }
+
+    public void setItem2_1(int item2_1) {
+        this.item2_1 = item2_1;
+    }
+
+    public int getItem2_2() {
+        return item2_2;
+    }
+
+    public void setItem2_2(int item2_2) {
+        this.item2_2 = item2_2;
+    }
+
+    public int getItem2_3() {
+        return item2_3;
+    }
+
+    public void setItem2_3(int item2_3) {
+        this.item2_3 = item2_3;
+    }
+
+    public int getItem2_4() {
+        return item2_4;
+    }
+
+    public void setItem2_4(int item2_4) {
+        this.item2_4 = item2_4;
+    }
+
+    public int getItem2_5() {
+        return item2_5;
+    }
+
+    public void setItem2_5(int item2_5) {
+        this.item2_5 = item2_5;
+    }
+
+    public int getItem2_6() {
+        return item2_6;
+    }
+
+    public void setItem2_6(int item2_6) {
+        this.item2_6 = item2_6;
     }
 
     public Timestamp getCreateDateTime() {
@@ -568,13 +651,16 @@ public class Order {
                 ", postcode='" + postcode + '\'' +
                 ", address='" + address + '\'' +
                 ", remark='" + remark + '\'' +
-                ", clientQuantity=" + clientQuantity +
-                ", item1=" + item1 +
-                ", item2=" + item2 +
-                ", item3=" + item3 +
-                ", item4=" + item4 +
-                ", item5=" + item5 +
-                ", item6=" + item6 +
+                ", clientQuantity1=" + clientQuantity1 +
+                ", clientQuantity2=" + clientQuantity2 +
+                ", item1_1=" + item1_1 +
+                ", item1_2=" + item1_2 +
+                ", item1_3=" + item1_3 +
+                ", item1_4=" + item1_4 +
+                ", item2_1=" + item2_1 +
+                ", item2_2=" + item2_2 +
+                ", item2_3=" + item2_3 +
+                ", item2_4=" + item2_4 +
                 ", createDateTime=" + createDateTime +
                 ", status=" + status +
                 ", orderID='" + orderID + '\'' +
